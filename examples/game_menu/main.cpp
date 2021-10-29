@@ -1,4 +1,5 @@
-#include "GameEngine.h"
+#include "../../src/Controller.h"
+#include "../NoGUI/src/GUI.h"
 
 //GameEngine::GameEngine()
 //{
