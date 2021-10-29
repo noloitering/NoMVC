@@ -1,0 +1,3 @@
+[submodule "NoMEM"]
+	path = NoMEM
+	url = https://github.com/noloitering/NoMEM.git

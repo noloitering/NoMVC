@@ -3,9 +3,6 @@
 #include <vector>
 
 #include "Model.h"
-//#include "GUI.h"
-//#include "EntityManager.h"
-//#include "Observer.h"
 
 namespace NoMVC
 {
@@ -33,9 +30,9 @@ namespace NoMVC
 		size_t frame = 0;
 		void setPaused(bool paused) {paused = paused;}
 	public:
-		Scene(GameEngine *g, WindowConfig conf)
+		View(Controller *g, WindowConfig conf)
 			: game(g), config(conf) {}
-		virtual ~Scene() {}
+		virtual ~View() {}
 		virtual std::shared_ptr< Model > addModel(const Model& model);
 		virtual int removeModel(size_t index);
 		virtual void update();

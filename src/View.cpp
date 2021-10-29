@@ -1,5 +1,5 @@
-#include "Scene.h"
-#include "GameEngine.h"
+#include "View.h"
+#include "Controller.h"
 
 void NoMVC::View::update()
 {

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "View.h"
-//#include "Asset.h"
-#include "NoMEM.h"
+#include "../NoMEM/src/NoMEM.h"
 
 namespace NoMVC
 { 
