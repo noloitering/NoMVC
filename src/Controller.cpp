@@ -6,7 +6,6 @@ NoMVC::Controller::Controller()
 	SetTargetFPS(window.fps);
 
 	scene = std::make_shared< View >(this, window);
-//	scene->overlay.addListener(scene);
 	scene->update();
 }
 

@@ -198,79 +198,80 @@ public:
 	void update() {NoMVC::View::update();}
 	void render() {NoMVC::View::render();}
 	void run() {NoMVC::View::run();}
-	void onNotify(std::shared_ptr< NoGUI::Element > elem) {}
+	void onNotify(std::shared_ptr< NoGUI::Element > elem);
 	Menu(NoMVC::Controller* g, NoMVC::WindowConfig conf)
 		: NoMVC::View(g, conf) {}
 };
 
-//void Menu::onNotify(std::shared_ptr< Element > elem)
-//{
-//	if ( elem->hasComponent< CInput >() )
-//	{
-//		CInput& input = elem->getComponent< CInput >();
-//		int key = GetCharPressed();
+void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
+{
+	NoGUI::GUIManager* overlay = dynamic_cast< NoGUI::GUIManager* >(models[0].get());
+	if ( elem->hasComponent< NoGUI::CInput >() )
+	{
+		NoGUI::CInput& input = elem->getComponent< NoGUI::CInput >();
+		int key = GetCharPressed();
 		// Check if more characters have been pressed on the same frame
-//		while (key > 0)
-//		{
+		while (key > 0)
+		{
 			// NOTE: Only allow keys in range [32..125]
-//			if ( (key >= 32) && (key <= 125) && (input.i < input.cap) )
-//			{
-//				std::string inner = elem->getInner();
-//				inner.push_back((char)key);
-//				elem->setInner(inner);
-//				input.i++;
-//			}
-//			key = GetCharPressed();  // Check next character in the queue
-//		}
-//		if ( IsKeyPressed(KEY_BACKSPACE) )
-//		{
-//			if ( input.i > 0 )
-//			{
-//				input.i--;
-//				std::string inner = elem->getInner();
-//				inner.pop_back();
-//				elem->setInner(inner);
-//			}
-//			else
-//			{
-//				input.i = 0;
-//			}
-//		}
-//	}
-//	else if ( elem->getInner() == "Join" )
-//	{
-//		overlay.getPage(3)->setActive(false);
-//		overlay.getPage(2)->setActive(true);
-//		elem->repos((Vector2){elem->styling().pos.x, 50});
-//		overlay.getPage(1)->getElement(0)->repos((Vector2){overlay.getPage(1)->getElement(0)->styling().pos.x, elem->styling().pos.y + 8});
-//	}
-//	else if ( elem->getInner() == "Play Online" )
-//	{
-//		overlay.getPage(0)->setActive(false);
-//		overlay.getPage(1)->setActive(true);
-//		overlay.getPage(2)->setActive(true);
-//	}
-//	else if ( elem->getInner() == "Settings" )
-//	{
-//		overlay.getPage(0)->setActive(false);
-//		overlay.getPage(4)->setActive(true);
-//	}
-//	else if ( elem->getInner() == "Host" )
-//	{
-//		overlay.getPage(2)->setActive(false);
-//		overlay.getPage(3)->setActive(true);
-//		elem->repos((Vector2){elem->styling().pos.x, 50});
-//		overlay.getPage(1)->getElement(1)->repos((Vector2){overlay.getPage(1)->getElement(1)->styling().pos.x, elem->styling().pos.y + 8});
-//	}
-//	else if ( elem->getInner() == "Back" )
-//	{
-//		overlay.setActive(0);
-//	}
-//	else if ( elem->getInner() == "Exit" )
-//	{
-//		game->quit();
-//	}
-//}
+			if ( (key >= 32) && (key <= 125) && (input.i < input.cap) )
+			{
+				std::string inner = elem->getInner();
+				inner.push_back((char)key);
+				elem->setInner(inner);
+				input.i++;
+			}
+			key = GetCharPressed();  // Check next character in the queue
+		}
+		if ( IsKeyPressed(KEY_BACKSPACE) )
+		{
+			if ( input.i > 0 )
+			{
+				input.i--;
+				std::string inner = elem->getInner();
+				inner.pop_back();
+				elem->setInner(inner);
+			}
+			else
+			{
+				input.i = 0;
+			}
+		}
+	}
+	else if ( elem->getInner() == "Join" )
+	{
+		overlay->getPage(3)->setActive(false);
+		overlay->getPage(2)->setActive(true);
+		elem->repos((Vector2){elem->styling().pos.x, 50});
+		overlay->getPage(1)->getElement(0)->repos((Vector2){overlay->getPage(1)->getElement(0)->styling().pos.x, elem->styling().pos.y + 8});
+	}
+	else if ( elem->getInner() == "Play Online" )
+	{
+		overlay->getPage(0)->setActive(false);
+		overlay->getPage(1)->setActive(true);
+		overlay->getPage(2)->setActive(true);
+	}
+	else if ( elem->getInner() == "Settings" )
+	{
+		overlay->getPage(0)->setActive(false);
+		overlay->getPage(4)->setActive(true);
+	}
+	else if ( elem->getInner() == "Host" )
+	{
+		overlay->getPage(2)->setActive(false);
+		overlay->getPage(3)->setActive(true);
+		elem->repos((Vector2){elem->styling().pos.x, 50});
+		overlay->getPage(1)->getElement(1)->repos((Vector2){overlay->getPage(1)->getElement(1)->styling().pos.x, elem->styling().pos.y + 8});
+	}
+	else if ( elem->getInner() == "Back" )
+	{
+		overlay->setActive(0);
+	}
+	else if ( elem->getInner() == "Exit" )
+	{
+		game->quit();
+	}
+}
 
 int main(int argc, char ** argv)
 {	
@@ -280,6 +281,7 @@ int main(int argc, char ** argv)
 	std::shared_ptr< NoMVC::Controller > game = std::make_shared< NoMVC::Controller >(NoMVC::Controller());
 	std::shared_ptr< Menu > menu = std::make_shared< Menu >(game.get(), game->getWindow());
 	std::shared_ptr< NoGUI::GUIManager > GUIModel = std::make_shared< NoGUI::GUIManager >(NoGUI::GUIManager());
+	GUIModel->addListener(menu);
 	
 	Vector2 center = (Vector2){game->getWindow().width/2, game->getWindow().height/2};
 	// TODO: load this from a file
