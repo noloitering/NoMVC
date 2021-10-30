@@ -12,10 +12,10 @@ namespace NoMVC
 		WindowConfig window;
 	public:
 		NoMEM::MEMManager assets;
-		GameEngine();
+		Controller();
 		MouseCursor cursor = MOUSE_CURSOR_DEFAULT;
 		std::shared_ptr< View > currentScene();
-		std::shared_ptr< View > changeScene(const View& newScene);
+		std::shared_ptr< View > changeScene(std::shared_ptr< NoMVC::View > newScene);
 		NoMVC::WindowConfig getWindow();
 		int run();
 		int quit();

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Model.h"
+#include "raylib.h"
 
 namespace NoMVC
 {
@@ -16,13 +17,15 @@ namespace NoMVC
 		int fps = 60; // frames per second
 		float spf = 1 / 60;
 		bool full = false;  // fullscreen
+		Color backCol = RAYWHITE;
 	};
-
+	
+	// TODO: use templates to cast models to their derived counterparts on get or add
 	class View
 	{
 	friend class Controller;
 	protected:
-		virtual void cleanup() = 0;
+		virtual void cleanup();
 		std::vector< std::shared_ptr< Model > > models;
 		Controller* game = nullptr;
 		WindowConfig config;
@@ -33,9 +36,10 @@ namespace NoMVC
 	public:
 		View(Controller *g, WindowConfig conf)
 			: game(g), config(conf) {}
+		int size();
 		virtual ~View() {}
-		virtual std::shared_ptr< Model > addModel(const Model& model);
 		virtual int removeModel(size_t index);
+		virtual void addModel(std::shared_ptr< Model > newModel);
 		virtual void update();
 		virtual void render();
 		virtual void run();

@@ -12,7 +12,7 @@ void NoMVC::View::update()
 void NoMVC::View::render()
 {
 	BeginDrawing();
-		ClearBackground(RAYWHITE);
+		ClearBackground(config.backCol);
 		for (auto model : models)
 		{
 			model->render();
@@ -26,14 +26,20 @@ void NoMVC::View::run()
 	render();
 }
 
-std::shared_ptr< Model > NoMVC::View::addModel()
+void NoMVC::View::cleanup()
 {
-	models.push_back(std::make_shared< Model >(newModel));
-	
-	return models[models.size--];
+	for (auto model : models )
+	{
+		model = nullptr;
+	}
 }
 
-std::shared_ptr< Model > NoMVC::View::getModel(size_t index)
+void NoMVC::View::addModel(std::shared_ptr< Model > newModel)
+{
+	models.push_back(newModel);
+}
+
+std::shared_ptr< NoMVC::Model > NoMVC::View::getModel(size_t index)
 {
 	
 	return models[index];
@@ -41,7 +47,7 @@ std::shared_ptr< Model > NoMVC::View::getModel(size_t index)
 
 int NoMVC::View::removeModel(size_t index)
 {
-	models[index] = nullptr;
+	models.erase(models.begin() + index);
 	
 	return models.size();
 }

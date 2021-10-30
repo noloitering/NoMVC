@@ -14,20 +14,23 @@ int NoMVC::Controller::run()
 {
 	while ( !WindowShouldClose() )
 	{
-		scene->update();
-		BeginDrawing();
-			scene->overlay.render();
-			ClearBackground(RAYWHITE);
-		EndDrawing();
+		scene->run();
 	}
 	quit();
 	
 	return 0;
 }
 
-std::shared_ptr< View > NoMVC::Controller::changeScene(View newScene)
+std::shared_ptr< NoMVC::View > NoMVC::Controller::currentScene()
 {
-	scene = std::make_shared< View >(newScene);
+	
+	return scene;
+}
+
+std::shared_ptr< NoMVC::View > NoMVC::Controller::changeScene(std::shared_ptr< NoMVC::View > newScene)
+{
+	scene->cleanup();
+	scene = newScene;
 }
 
 int NoMVC::Controller::quit()
@@ -41,13 +44,13 @@ int NoMVC::Controller::quit()
 	return 0;
 }
 
-NoMVC::WindowConfig getWindow()
+NoMVC::WindowConfig NoMVC::Controller::getWindow()
 {
 	
 	return window;
 }
 
-void NoMVC::changeWindow(const NoMVC::WindowConfig newWindow)
+void NoMVC::Controller::changeWindow(const NoMVC::WindowConfig& newWindow)
 {
 	window = newWindow;
 }

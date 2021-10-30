@@ -192,14 +192,15 @@
 class Menu : public NoMVC::View, public NoGUI::Listener
 {
 public:
-	void update();
-	void render();
-	void run();
-	void cleanup() {}
-	void onNotify(std::shared_ptr< NoGUI::Element > elem) {};
-	
-	Menu(Controller* g, WindowConfig conf)
-		: View(g, conf) {}
+	void addModel(std::shared_ptr< NoMVC::Model > newModel) {NoMVC::View::addModel(newModel);}
+	void cleanup() {NoMVC::View::cleanup();}
+	int removeModel(size_t index) {NoMVC::View::removeModel(index);}
+	void update() {NoMVC::View::update();}
+	void render() {NoMVC::View::render();}
+	void run() {NoMVC::View::run();}
+	void onNotify(std::shared_ptr< NoGUI::Element > elem) {}
+	Menu(NoMVC::Controller* g, NoMVC::WindowConfig conf)
+		: NoMVC::View(g, conf) {}
 };
 
 //void Menu::onNotify(std::shared_ptr< Element > elem)
@@ -276,22 +277,22 @@ int main(int argc, char ** argv)
 	Color INVISIBLE = (Color){0, 0, 0, 1};
 	Color BACKGROUND = (Color){100, 100, 100, 255};
 	
-	NoMVC::Controller game = NoMVC::Controller();
-	Menu menu = Menu(game, game.getWindow());
-	NoGUI::GUIManager GUIModel = GUIManager();
+	std::shared_ptr< NoMVC::Controller > game = std::make_shared< NoMVC::Controller >(NoMVC::Controller());
+	std::shared_ptr< Menu > menu = std::make_shared< Menu >(game.get(), game->getWindow());
+	std::shared_ptr< NoGUI::GUIManager > GUIModel = std::make_shared< NoGUI::GUIManager >(NoGUI::GUIManager());
 	
-	Vector2 center = (Vector2){window.width/2, window.height/2};
+	Vector2 center = (Vector2){game->getWindow().width/2, game->getWindow().height/2};
 	// TODO: load this from a file
-	std::shared_ptr< Font > font = game.assets.addFont("jupiter_crash", "../fonts/jupiter_crash.png");
-	std::shared_ptr< Texture2D > mainImg = game.assets.addTexture("mainBack", "../imgs/space2.png");
+	std::shared_ptr< Font > font = game->assets.addFont("jupiter_crash", "../fonts/jupiter_crash.png");
+	std::shared_ptr< Texture2D > mainImg = game->assets.addTexture("mainBack", "../imgs/space2.png");
 	NoGUI::CImage mainBack = NoGUI::CImage(mainImg);
 	mainBack.cropping = NoGUI::Crop::NONE;
-	std::shared_ptr< Texture2D > settingsImg = game.assets.addTexture("setBack", "../imgs/pond1.png");
+	std::shared_ptr< Texture2D > settingsImg = game->assets.addTexture("setBack", "../imgs/pond1.png");
 	NoGUI::CImage settingsBack = NoGUI::CImage(settingsImg);
 	settingsBack.cropping = NoGUI::Crop::NONE;
-	std::shared_ptr< Texture2D > joinImg = game.assets.addTexture("joinBack", "../imgs/background.png");
+	std::shared_ptr< Texture2D > joinImg = game->assets.addTexture("joinBack", "../imgs/background.png");
 	NoGUI::CImage joinBack = NoGUI::CImage(joinImg);
-	std::shared_ptr< Texture2D > hostImg = game.assets.addTexture("hostBack", "../imgs/background2.png");
+	std::shared_ptr< Texture2D > hostImg = game->assets.addTexture("hostBack", "../imgs/background2.png");
 	NoGUI::CImage hostBack = NoGUI::CImage(hostImg);
 	// text
 	NoGUI::CText titleStyle = NoGUI::CText(font);
@@ -310,9 +311,9 @@ int main(int argc, char ** argv)
 	NoGUI::CText inputStyle = labelStyle;
 	inputStyle.shadow.draw = false;
 	NoGUI::CText buttonStyle = inputStyle; // copy
-	buttonStyle.align = TextAlign::CENTER;
+	buttonStyle.align = NoGUI::TextAlign::CENTER;
 	NoGUI::CText joinText = inputStyle; // copy
-	joinText.align = TextAlign::TOP;
+	joinText.align = NoGUI::TextAlign::TOP;
 	joinText.margin = (Vector2){0, 0};
 	NoGUI::CText hostText = joinText; // copy
 	hostText.margin = (Vector2){3, 0};
@@ -327,12 +328,12 @@ int main(int argc, char ** argv)
 	NoGUI::Style settingsStyle = {LIGHTGRAY, BLACK, (Vector2){offlineStyle.pos.x, offlineStyle.pos.y + 150}, (Vector2){115, 50}, 4, 1, 0};
 	NoGUI::Style exitStyle = {LIGHTGRAY, BLACK, (Vector2){settingsStyle.pos.x, settingsStyle.pos.y + 150}, (Vector2){115, 50}, 4, 1, 0};
 	
-	std::shared_ptr< NoGUI::Element > titleLabel = GUIModel.addElement< NoGUI::Element >(title, "ANDOR", "Label");
-	std::shared_ptr< NoGUI::Element > onlineButton = GUIModel.addElement< NoGUI::Button >(onlineStyle, "Play Online", "Button");
-	std::shared_ptr< NoGUI::Element > offlineButton = GUIModel.addElement< NoGUI::Button >(offlineStyle, "Play Offline", "Button");
-	std::shared_ptr< NoGUI::Element > settingsButton = GUIModel.addElement< NoGUI::Button >(settingsStyle, "Settings", "Button");
-	std::shared_ptr< NoGUI::Element > exitButton = GUIModel.addElement< NoGUI::Button >(exitStyle, "Exit", "Button");
-	std::shared_ptr< NoGUI::Element > mainBackground = GUIModel.addElement< NoGUI::Element >(mainBackStyle, "", "ALabel");
+	std::shared_ptr< NoGUI::Element > titleLabel = GUIModel->addElement< NoGUI::Element >(title, "ANDOR", "Label");
+	std::shared_ptr< NoGUI::Element > onlineButton = GUIModel->addElement< NoGUI::Button >(onlineStyle, "Play Online", "Button");
+	std::shared_ptr< NoGUI::Element > offlineButton = GUIModel->addElement< NoGUI::Button >(offlineStyle, "Play Offline", "Button");
+	std::shared_ptr< NoGUI::Element > settingsButton = GUIModel->addElement< NoGUI::Button >(settingsStyle, "Settings", "Button");
+	std::shared_ptr< NoGUI::Element > exitButton = GUIModel->addElement< NoGUI::Button >(exitStyle, "Exit", "Button");
+	std::shared_ptr< NoGUI::Element > mainBackground = GUIModel->addElement< NoGUI::Element >(mainBackStyle, "", "ALabel");
 	
 	titleLabel->addComponent< NoGUI::CText >(titleStyle);
 	onlineButton->addComponent< NoGUI::CText >(buttonStyle);
@@ -341,10 +342,12 @@ int main(int argc, char ** argv)
 	exitButton->addComponent< NoGUI::CText >(buttonStyle);
 	mainBackground->addComponent< NoGUI::CImage >(mainBack);
 	
-	menu.addModel(model);
-	game.changeScene(menu);
-	game.currentScene().update();
-	int res = game.run();
+	std::shared_ptr< NoMVC::Model > model = GUIModel;
+	std::shared_ptr< NoMVC::View > view = menu;
+	menu->addModel(model);
+	game->changeScene(menu);
+	game->currentScene()->update();
+	int res = game->run();
 
 	return res;
 }
