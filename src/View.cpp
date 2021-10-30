@@ -51,3 +51,9 @@ int NoMVC::View::removeModel(size_t index)
 	
 	return models.size();
 }
+
+NoMVC::WindowConfig NoMVC::View::getWindow()
+{
+	
+	return config;
+}

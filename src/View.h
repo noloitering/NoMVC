@@ -36,7 +36,6 @@ namespace NoMVC
 	public:
 		View(Controller *g, WindowConfig conf)
 			: game(g), config(conf) {}
-		int size();
 		virtual ~View() {}
 		virtual int removeModel(size_t index);
 		virtual void addModel(std::shared_ptr< Model > newModel);
@@ -44,6 +43,8 @@ namespace NoMVC
 		virtual void render();
 		virtual void run();
 		std::shared_ptr< Model > getModel(size_t index);
+		WindowConfig getWindow();
+		int size();
 		size_t currentFrame() {return frame;}
 	};
 }
