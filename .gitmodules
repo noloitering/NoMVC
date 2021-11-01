@@ -2,5 +2,5 @@
 	path = NoMEM
 	url = https://github.com/noloitering/NoMEM.git
 [submodule "examples/NoGUI"]
-	path = examples/NoGUI
+	path = examples/include/NoGUI
 	url = https://github.com/noloitering/NoGUI.git
