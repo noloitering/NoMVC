@@ -1,5 +1,5 @@
 #include "../../src/Controller.h"
-#include "../NoGUI/src/GUI.h"
+#include "../include/NoGUI/src/GUI.h"
 
 class Menu : public NoMVC::View, public NoGUI::Listener
 {
