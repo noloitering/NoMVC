@@ -18,39 +18,7 @@ public:
 void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
 {
 	NoGUI::GUIManager* overlay = dynamic_cast< NoGUI::GUIManager* >(models[0].get());
-	if ( elem->hasComponent< NoGUI::CInput >() )
-	{
-		NoGUI::CInput& input = elem->getComponent< NoGUI::CInput >();
-		int key = GetCharPressed();
-		// Check if more characters have been pressed on the same frame
-		while (key > 0)
-		{
-			// NOTE: Only allow keys in range [32..125]
-			if ( (key >= 32) && (key <= 125) && (input.i < input.cap) )
-			{
-				std::string inner = elem->getInner();
-				inner.push_back((char)key);
-				elem->setInner(inner);
-				input.i++;
-			}
-			key = GetCharPressed();  // Check next character in the queue
-		}
-		if ( IsKeyPressed(KEY_BACKSPACE) )
-		{
-			if ( input.i > 0 )
-			{
-				input.i--;
-				std::string inner = elem->getInner();
-				inner.pop_back();
-				elem->setInner(inner);
-			}
-			else
-			{
-				input.i = 0;
-			}
-		}
-	}
-	else if ( elem->getInner() == "Join" )
+	if ( elem->getInner() == "Join" )
 	{
 		overlay->getPage(3)->setActive(false);
 		overlay->getPage(2)->setActive(true);
@@ -193,10 +161,10 @@ int main(int argc, char ** argv)
 	std::shared_ptr< NoGUI::Element > portLabel = pg->addElement< NoGUI::Element >(portStyle, "Port:", "Label");
 	std::shared_ptr< NoGUI::Element > nameLabel = pg->addElement< NoGUI::Element >(nameStyle, "Username:", "Label");
 	std::shared_ptr< NoGUI::Element > msgLabel = pg->addElement< NoGUI::Element >(msgStyle, "Message:", "Label");
-	std::shared_ptr< NoGUI::Element > IPInput = pg->addElement< NoGUI::Element >(IPInStyle, "", "Input");
-	std::shared_ptr< NoGUI::Element > portInput = pg->addElement< NoGUI::Element >(portInStyle, "", "Input");
-	std::shared_ptr< NoGUI::Element > nameInput = pg->addElement< NoGUI::Element >(nameInStyle, "", "Input");
-	std::shared_ptr< NoGUI::Element > msgInput = pg->addElement< NoGUI::Element >(msgInStyle, "", "Input");
+	std::shared_ptr< NoGUI::Element > IPInput = pg->addElement< NoGUI::Input >(IPInStyle, "", "Input");
+	std::shared_ptr< NoGUI::Element > portInput = pg->addElement< NoGUI::Input >(portInStyle, "", "Input");
+	std::shared_ptr< NoGUI::Element > nameInput = pg->addElement< NoGUI::Input >(nameInStyle, "", "Input");
+	std::shared_ptr< NoGUI::Element > msgInput = pg->addElement< NoGUI::Input >(msgInStyle, "", "Input");
 	// components
 	IPLabel->addComponent< NoGUI::CText >(labelStyle);
 	portLabel->addComponent< NoGUI::CText >(labelStyle);
@@ -211,10 +179,6 @@ int main(int argc, char ** argv)
 	portInput->addComponent< NoGUI::CText >(inputStyle);
 	nameInput->addComponent< NoGUI::CText >(inputStyle);
 	msgInput->addComponent< NoGUI::CText >(inputStyle);
-	IPInput->addComponent< NoGUI::CInput >();
-	portInput->addComponent< NoGUI::CInput >();
-	nameInput->addComponent< NoGUI::CInput >();
-	msgInput->addComponent< NoGUI::CInput >();
 	
 	// Page 3 (host)
 	GUIModel->addPage();
@@ -235,7 +199,7 @@ int main(int argc, char ** argv)
 	std::shared_ptr< NoGUI::Element > lootLabel = pg->addElement< NoGUI::Element >(lootStyle, "Loot Style", "Label");
 	std::shared_ptr< NoGUI::Element > playerLabel = pg->addElement< NoGUI::Element >(playerStyle, "Character", "Label");
 	std::shared_ptr< NoGUI::Element > cheatLabel = pg->addElement< NoGUI::Element >(cheatStyle, "Cheat Codes:", "Label");
-	std::shared_ptr< NoGUI::Element > cheatInput = pg->addElement< NoGUI::Element >(cheatInStyle, "", "Input");
+	std::shared_ptr< NoGUI::Element > cheatInput = pg->addElement< NoGUI::Input >(cheatInStyle, "", "Input");
 	// components
 	hostImgLabel->addComponent< NoGUI::CImage >(hostBack);
 	FFLabel->addComponent< NoGUI::CText >(hostLabelStyle);
@@ -245,7 +209,6 @@ int main(int argc, char ** argv)
 	serverButton->addComponent<NoGUI::CText>(buttonStyle);
 	enterButton->addComponent<NoGUI::CText>(buttonStyle);
 	cheatInput->addComponent< NoGUI::CText >(inputStyle);
-	cheatInput->addComponent< NoGUI::CInput >();
 	
 	// Page 4 (settings)
 	GUIModel->addPage();
