@@ -179,6 +179,10 @@ int main(int argc, char ** argv)
 	portInput->addComponent< NoGUI::CText >(inputStyle);
 	nameInput->addComponent< NoGUI::CText >(inputStyle);
 	msgInput->addComponent< NoGUI::CText >(inputStyle);
+	IPInput->addComponent< NoGUI::CInput >(50);
+	portInput->addComponent< NoGUI::CInput >(10);
+	nameInput->addComponent< NoGUI::CInput >(50);
+	msgInput->addComponent< NoGUI::CInput >(200);
 	
 	// Page 3 (host)
 	GUIModel->addPage();
@@ -209,6 +213,7 @@ int main(int argc, char ** argv)
 	serverButton->addComponent<NoGUI::CText>(buttonStyle);
 	enterButton->addComponent<NoGUI::CText>(buttonStyle);
 	cheatInput->addComponent< NoGUI::CText >(inputStyle);
+	cheatInput->addComponent< NoGUI::CInput >(50);
 	
 	// Page 4 (settings)
 	GUIModel->addPage();
