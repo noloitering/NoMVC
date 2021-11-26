@@ -125,8 +125,8 @@ int main(int argc, char ** argv)
 	mainBackground->addComponent< NoGUI::CImage >(mainBack);
 	
 	// Page 1 (online navbar)
-	GUIModel->addPage();
-	std::shared_ptr< NoGUI::Page > pg = GUIModel->getPage(1);
+	std::shared_ptr< NoGUI::Page > pg = GUIModel->addPage();
+//	std::shared_ptr< NoGUI::Page > pg = GUIModel->getPage(1);
 	
 	NoGUI::Style joinStyle = {BACKGROUND, BLACK, (Vector2){25, 50}, (Vector2){25, 30}, 4, 0, 0};
 	NoGUI::Style hostStyle = {BACKGROUND, BLACK, (Vector2){joinStyle.pos.x + joinStyle.radius.x * 2 - 4, joinStyle.pos.y + 8}, (Vector2){25, 30}, 4, 0, 0};
@@ -139,8 +139,8 @@ int main(int argc, char ** argv)
 	returnButton->addComponent< NoGUI::CText >(hostText);
 	
 	// Page 2 (join)
-	GUIModel->addPage();
-	pg = GUIModel->getPage(2);
+	pg = GUIModel->addPage();
+//	pg = GUIModel->getPage(2);
 	
 	NoGUI::Style backStyle = {BACKGROUND, BLACK, (Vector2){center.x, center.y + 25}, (Vector2){center.x, center.y - 25}, 4, 0, 0};
 	NoGUI::Style IPStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 250}, (Vector2){112, 25}, 4, 0, 0};
@@ -185,8 +185,8 @@ int main(int argc, char ** argv)
 	msgInput->addComponent< NoGUI::CInput >(200);
 	
 	// Page 3 (host)
-	GUIModel->addPage();
-	pg = GUIModel->getPage(3);
+	pg = GUIModel->addPage();
+//	pg = GUIModel->getPage(3);
 	
 	NoGUI::Style FFStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 250}, (Vector2){112, 25}, 4, 0, 0};
 	NoGUI::Style lootStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 200}, (Vector2){112, 25}, 4, 0, 0};
@@ -216,8 +216,8 @@ int main(int argc, char ** argv)
 	cheatInput->addComponent< NoGUI::CInput >(50);
 	
 	// Page 4 (settings)
-	GUIModel->addPage();
-	pg = GUIModel->getPage(4);
+	pg = GUIModel->addPage();
+//	pg = GUIModel->getPage(4);
 	
 	NoGUI::Style setBackStyle = {BACKGROUND, BLACK, (Vector2){center.x, center.y}, (Vector2){center.x, center.y}, 4, 0, 0};
 	NoGUI::Style vsyncStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 250}, (Vector2){112, 25}, 4, 0, 0};
