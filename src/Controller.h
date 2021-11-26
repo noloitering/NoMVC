@@ -1,7 +1,7 @@
 #pragma once
 
 #include "View.h"
-#include "../NoMEM/src/NoMEM.h"
+#include "../../NoMEM/src/NoMEM.h"
 
 namespace NoMVC
 { 
