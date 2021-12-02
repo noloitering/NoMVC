@@ -1,8 +1,22 @@
 #include "Controller.h"
 
-NoMVC::Controller::Controller()
+NoMVC::Controller::Controller(bool start)
 {
-	InitWindow(window.width, window.height, "Client App");
+	if ( start )
+	{
+		init();
+	}
+}
+
+NoMVC::Controller::Controller(const NoMVC::WindowConfig& config, bool start)
+{
+	changeWindow(config, false);
+	init();
+}
+
+void NoMVC::Controller::init(const std::string& title)
+{
+	InitWindow(window.width, window.height, title.c_str());
 	SetTargetFPS(window.fps);
 
 	scene = std::make_shared< View >(this, window);
@@ -49,7 +63,11 @@ NoMVC::WindowConfig NoMVC::Controller::getWindow()
 	return window;
 }
 
-void NoMVC::Controller::changeWindow(const NoMVC::WindowConfig& newWindow)
+void NoMVC::Controller::changeWindow(const NoMVC::WindowConfig& newWindow, bool set)
 {
 	window = newWindow;
+	if ( set )
+	{
+		SetWindowSize(newWindow.width, newWindow.height);
+	}
 }

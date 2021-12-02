@@ -12,13 +12,15 @@ namespace NoMVC
 		WindowConfig window;
 	public:
 		NoMEM::MEMManager assets;
-		Controller();
+		Controller(bool start=true);
+		Controller(const WindowConfig& config, bool start=true);
+		void init(const std::string& title="Client App");
 		MouseCursor cursor = MOUSE_CURSOR_DEFAULT;
 		std::shared_ptr< View > currentScene();
 		std::shared_ptr< View > changeScene(std::shared_ptr< NoMVC::View > newScene);
 		WindowConfig getWindow();
 		int run();
 		int quit();
-		void changeWindow(const WindowConfig& newWindow);
+		void changeWindow(const WindowConfig& newWindow, bool set=true);
 	};
 }
