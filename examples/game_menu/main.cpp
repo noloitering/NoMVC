@@ -58,7 +58,7 @@ int main(int argc, char ** argv)
 	Color INVISIBLE = (Color){0, 0, 0, 1};
 	Color BACKGROUND = (Color){100, 100, 100, 255};
 	
-	std::shared_ptr< NoMVC::Controller > game = std::make_shared< NoMVC::Controller >(NoMVC::Controller());
+	std::shared_ptr< NoMVC::Controller > game = std::make_shared< NoMVC::Controller >();
 	std::shared_ptr< Menu > menu = std::make_shared< Menu >(game.get(), game->getWindow());
 	std::shared_ptr< NoGUI::GUIManager > GUIModel = std::make_shared< NoGUI::GUIManager >(NoGUI::GUIManager());
 	GUIModel->addListener(menu);
