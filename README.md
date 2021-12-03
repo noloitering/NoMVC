@@ -1,2 +1,2 @@
 # NoMVC
- Model View Controller framework for NoMAD game engine 
+ Model View Controller framework for NoMAD Game Engine 
