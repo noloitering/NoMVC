@@ -61,6 +61,7 @@ int main(int argc, char ** argv)
 	std::shared_ptr< NoMVC::Controller > game = std::make_shared< NoMVC::Controller >();
 	std::shared_ptr< Menu > menu = std::make_shared< Menu >(game.get(), game->getWindow());
 	std::shared_ptr< NoGUI::GUIManager > GUIModel = std::make_shared< NoGUI::GUIManager >(NoGUI::GUIManager());
+	std::shared_ptr< NoGUI::Page > pg = GUIModel->getPage();
 	GUIModel->addListener(menu);
 	
 	Vector2 center = (Vector2){game->getWindow().width/2, game->getWindow().height/2};
@@ -103,6 +104,14 @@ int main(int argc, char ** argv)
 	hostLabelStyle.align = NoGUI::TextAlign::LEFT;
 	
 	// Page 0 (main menu)
+	pg->addComponents("Label", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Button", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("ALabel", std::make_shared< NoGUI::CContainer >());
+	
+	pg->getComponents("Label")->addComponent< NoGUI::CText >(titleStyle);
+	pg->getComponents("Button")->addComponent< NoGUI::CText >(buttonStyle);
+	pg->getComponents("ALabel")->addComponent< NoGUI::CImage >(mainBack);
+	
 	NoGUI::Style mainBackStyle = {BACKGROUND, BLACK, (Vector2){center.x, center.y}, (Vector2){center.x, center.y}, 4, 0, 0};
 	NoGUI::Style title = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 280}, (Vector2){115, 50}, 4, 0, 0};
 	NoGUI::Style onlineStyle = {LIGHTGRAY, BLACK, (Vector2){center.x, center.y - 175}, (Vector2){115, 50}, 4, 1, 0};
@@ -110,37 +119,31 @@ int main(int argc, char ** argv)
 	NoGUI::Style settingsStyle = {LIGHTGRAY, BLACK, (Vector2){offlineStyle.pos.x, offlineStyle.pos.y + 150}, (Vector2){115, 50}, 4, 1, 0};
 	NoGUI::Style exitStyle = {LIGHTGRAY, BLACK, (Vector2){settingsStyle.pos.x, settingsStyle.pos.y + 150}, (Vector2){115, 50}, 4, 1, 0};
 	
+	std::shared_ptr< NoGUI::Element > mainBackground = GUIModel->addElement< NoGUI::Element >(mainBackStyle, "", "ALabel");
 	std::shared_ptr< NoGUI::Element > titleLabel = GUIModel->addElement< NoGUI::Element >(title, "ANDOR", "Label");
 	std::shared_ptr< NoGUI::Element > onlineButton = GUIModel->addElement< NoGUI::Button >(onlineStyle, "Play Online", "Button");
 	std::shared_ptr< NoGUI::Element > offlineButton = GUIModel->addElement< NoGUI::Button >(offlineStyle, "Play Offline", "Button");
 	std::shared_ptr< NoGUI::Element > settingsButton = GUIModel->addElement< NoGUI::Button >(settingsStyle, "Settings", "Button");
 	std::shared_ptr< NoGUI::Element > exitButton = GUIModel->addElement< NoGUI::Button >(exitStyle, "Exit", "Button");
-	std::shared_ptr< NoGUI::Element > mainBackground = GUIModel->addElement< NoGUI::Element >(mainBackStyle, "", "ALabel");
-	
-	titleLabel->addComponent< NoGUI::CText >(titleStyle);
-	onlineButton->addComponent< NoGUI::CText >(buttonStyle);
-	offlineButton->addComponent< NoGUI::CText >(buttonStyle);
-	settingsButton->addComponent< NoGUI::CText >(buttonStyle);
-	exitButton->addComponent< NoGUI::CText >(buttonStyle);
-	mainBackground->addComponent< NoGUI::CImage >(mainBack);
 	
 	// Page 1 (online navbar)
-	std::shared_ptr< NoGUI::Page > pg = GUIModel->addPage();
-//	std::shared_ptr< NoGUI::Page > pg = GUIModel->getPage(1);
+	pg = GUIModel->addPage();
+
+	pg->addComponents("AButton", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Join", std::make_shared< NoGUI::CContainer >());
+	
+	pg->getComponents("Join")->addComponent< NoGUI::CText >(joinText);
+	pg->getComponents("AButton")->addComponent< NoGUI::CText >(hostText);
 	
 	NoGUI::Style joinStyle = {BACKGROUND, BLACK, (Vector2){25, 50}, (Vector2){25, 30}, 4, 0, 0};
 	NoGUI::Style hostStyle = {BACKGROUND, BLACK, (Vector2){joinStyle.pos.x + joinStyle.radius.x * 2 - 4, joinStyle.pos.y + 8}, (Vector2){25, 30}, 4, 0, 0};
 	NoGUI::Style returnStyle = {BACKGROUND, BLACK, (Vector2){menu->getWindow().width - joinStyle.radius.x, joinStyle.pos.y + 8}, (Vector2){25, 30}, 4, 0, 0};
 	std::shared_ptr< NoGUI::Element > hostButton = pg->addElement< NoGUI::Button >(hostStyle, "Host", "AButton");
-	std::shared_ptr< NoGUI::Element > joinButton = pg->addElement< NoGUI::Button >(joinStyle, "Join", "AButton");
+	std::shared_ptr< NoGUI::Element > joinButton = pg->addElement< NoGUI::Button >(joinStyle, "Join", "Join");
 	std::shared_ptr< NoGUI::Element > returnButton = pg->addElement< NoGUI::Button >(returnStyle, "Back", "AButton");
-	joinButton->addComponent< NoGUI::CText >(joinText);
-	hostButton->addComponent< NoGUI::CText >(hostText);
-	returnButton->addComponent< NoGUI::CText >(hostText);
 	
 	// Page 2 (join)
 	pg = GUIModel->addPage();
-//	pg = GUIModel->getPage(2);
 	
 	NoGUI::Style backStyle = {BACKGROUND, BLACK, (Vector2){center.x, center.y + 25}, (Vector2){center.x, center.y - 25}, 4, 0, 0};
 	NoGUI::Style IPStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 250}, (Vector2){112, 25}, 4, 0, 0};
@@ -153,6 +156,19 @@ int main(int argc, char ** argv)
 	NoGUI::Style portInStyle = {LIGHTGRAY, BLACK, (Vector2){portStyle.pos.x, portStyle.pos.y + 30}, (Vector2){112, 25}, 4, 2, 0};
 	NoGUI::Style nameInStyle = {LIGHTGRAY, BLACK, (Vector2){nameStyle.pos.x, nameStyle.pos.y + 30}, (Vector2){112, 25}, 4, 2, 0};
 	NoGUI::Style msgInStyle = {LIGHTGRAY, BLACK, (Vector2){msgStyle.pos.x, sendStyle.pos.y}, (Vector2){112, 25}, 4, 2, 0};
+	
+	// components
+	pg->addComponents("AImage", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Button", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Label", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Input", std::make_shared< NoGUI::CContainer >());
+	
+	pg->getComponents("Label")->addComponent< NoGUI::CText >(labelStyle);
+	pg->getComponents("Button")->addComponent< NoGUI::CText >(buttonStyle);
+	pg->getComponents("Input")->addComponent< NoGUI::CText >(inputStyle);
+	pg->getComponents("Input")->addComponent< NoGUI::CInput >(200);
+	pg->getComponents("AImage")->addComponent< NoGUI::CImage >(joinBack);
+	
 	// elements
 	std::shared_ptr< NoGUI::Element > imgLabel = pg->addElement< NoGUI::Element >(backStyle, "Background", "AImage");
 	std::shared_ptr< NoGUI::Element > connectButton = pg->addElement< NoGUI::Button >(connectStyle, "Connect", "Button");
@@ -165,28 +181,9 @@ int main(int argc, char ** argv)
 	std::shared_ptr< NoGUI::Element > portInput = pg->addElement< NoGUI::Input >(portInStyle, "", "Input");
 	std::shared_ptr< NoGUI::Element > nameInput = pg->addElement< NoGUI::Input >(nameInStyle, "", "Input");
 	std::shared_ptr< NoGUI::Element > msgInput = pg->addElement< NoGUI::Input >(msgInStyle, "", "Input");
-	// components
-	IPLabel->addComponent< NoGUI::CText >(labelStyle);
-	portLabel->addComponent< NoGUI::CText >(labelStyle);
-	nameLabel->addComponent< NoGUI::CText >(labelStyle);
-	msgLabel->addComponent< NoGUI::CText >(labelStyle);
-	connectButton->addComponent< NoGUI::CText >(buttonStyle);
-	sendButton->addComponent< NoGUI::CText >(buttonStyle);
-	joinButton->addComponent< NoGUI::CText >(joinText);
-	hostButton->addComponent< NoGUI::CText >(hostText);
-	imgLabel->addComponent< NoGUI::CImage >(joinBack);
-	IPInput->addComponent< NoGUI::CText >(inputStyle);
-	portInput->addComponent< NoGUI::CText >(inputStyle);
-	nameInput->addComponent< NoGUI::CText >(inputStyle);
-	msgInput->addComponent< NoGUI::CText >(inputStyle);
-	IPInput->addComponent< NoGUI::CInput >(50);
-	portInput->addComponent< NoGUI::CInput >(10);
-	nameInput->addComponent< NoGUI::CInput >(50);
-	msgInput->addComponent< NoGUI::CInput >(200);
 	
 	// Page 3 (host)
 	pg = GUIModel->addPage();
-//	pg = GUIModel->getPage(3);
 	
 	NoGUI::Style FFStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 250}, (Vector2){112, 25}, 4, 0, 0};
 	NoGUI::Style lootStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 200}, (Vector2){112, 25}, 4, 0, 0};
@@ -195,6 +192,19 @@ int main(int argc, char ** argv)
 	NoGUI::Style cheatInStyle = {LIGHTGRAY, BLACK, (Vector2){cheatStyle.pos.x, cheatStyle.pos.y + 30}, (Vector2){112, 25}, 4, 2, 0};
 	NoGUI::Style enterStyle = {GREEN, BLACK, (Vector2){center.x - cheatStyle.radius.x - 25, cheatStyle.pos.y + 30}, (Vector2){25, 25}, 4, 1, 0};
 	NoGUI::Style serverStyle = {GRAY, BLACK, (Vector2){center.x, center.y + 225}, (Vector2){115, 50}, 4, 1, 0};
+	
+	// components
+	pg->addComponents("AImage", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Button", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Label", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Input", std::make_shared< NoGUI::CContainer >());
+	
+	pg->getComponents("Label")->addComponent< NoGUI::CText >(hostLabelStyle);
+	pg->getComponents("Button")->addComponent< NoGUI::CText >(buttonStyle);
+	pg->getComponents("Input")->addComponent< NoGUI::CText >(inputStyle);
+	pg->getComponents("Input")->addComponent< NoGUI::CInput >(50);
+	pg->getComponents("AImage")->addComponent< NoGUI::CImage >(hostBack);
+	
 	// elements
 	std::shared_ptr< NoGUI::Element > hostImgLabel = pg->addElement< NoGUI::Element >(backStyle, "Background", "AImage");
 	std::shared_ptr< NoGUI::Element > serverButton = pg->addElement< NoGUI::Button >(serverStyle, "Host", "Button");
@@ -204,20 +214,9 @@ int main(int argc, char ** argv)
 	std::shared_ptr< NoGUI::Element > playerLabel = pg->addElement< NoGUI::Element >(playerStyle, "Character", "Label");
 	std::shared_ptr< NoGUI::Element > cheatLabel = pg->addElement< NoGUI::Element >(cheatStyle, "Cheat Codes:", "Label");
 	std::shared_ptr< NoGUI::Element > cheatInput = pg->addElement< NoGUI::Input >(cheatInStyle, "", "Input");
-	// components
-	hostImgLabel->addComponent< NoGUI::CImage >(hostBack);
-	FFLabel->addComponent< NoGUI::CText >(hostLabelStyle);
-	lootLabel->addComponent< NoGUI::CText >(hostLabelStyle);
-	playerLabel->addComponent< NoGUI::CText >(hostLabelStyle);
-	cheatLabel->addComponent< NoGUI::CText >(hostLabelStyle);
-	serverButton->addComponent<NoGUI::CText>(buttonStyle);
-	enterButton->addComponent<NoGUI::CText>(buttonStyle);
-	cheatInput->addComponent< NoGUI::CText >(inputStyle);
-	cheatInput->addComponent< NoGUI::CInput >(50);
 	
 	// Page 4 (settings)
 	pg = GUIModel->addPage();
-//	pg = GUIModel->getPage(4);
 	
 	NoGUI::Style setBackStyle = {BACKGROUND, BLACK, (Vector2){center.x, center.y}, (Vector2){center.x, center.y}, 4, 0, 0};
 	NoGUI::Style vsyncStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 250}, (Vector2){112, 25}, 4, 0, 0};
@@ -226,19 +225,25 @@ int main(int argc, char ** argv)
 	NoGUI::Style resStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 50}, (Vector2){112, 25}, 4, 0, 0};
 	NoGUI::Style mainStyle = {BACKGROUND, BLACK, (Vector2){menu->getWindow().width - 25,  20}, (Vector2){25, 18}, 4, 0, 0};
 	
+	// components
+	pg->addComponents("ALabel", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Button", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Label", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Input", std::make_shared< NoGUI::CContainer >());
+	
+	pg->getComponents("Label")->addComponent< NoGUI::CText >(hostLabelStyle);
+	pg->getComponents("Button")->addComponent< NoGUI::CText >(buttonStyle);
+	pg->getComponents("Input")->addComponent< NoGUI::CText >(inputStyle);
+	pg->getComponents("Input")->addComponent< NoGUI::CInput >(50);
+	pg->getComponents("ALabel")->addComponent< NoGUI::CImage >(hostBack);
+	
+	// elements
+	std::shared_ptr< NoGUI::Element > setBackground = pg->addElement< NoGUI::Element >(mainBackStyle, "", "ALabel");
 	std::shared_ptr< NoGUI::Element > vsyncLabel = pg->addElement< NoGUI::Element >(vsyncStyle, "Vsync", "Label");
 	std::shared_ptr< NoGUI::Element > fullLabel = pg->addElement< NoGUI::Element >(fullStyle, "Fullscreen", "Label");
 	std::shared_ptr< NoGUI::Element > AALabel = pg->addElement< NoGUI::Element >(AAStyle, "Anti Aliasing", "Label");
 	std::shared_ptr< NoGUI::Element > resLabel = pg->addElement< NoGUI::Element >(resStyle, "Resolution", "Label");
 	std::shared_ptr< NoGUI::Element > mainButton = pg->addElement< NoGUI::Button >(mainStyle, "Back", "Button");
-	std::shared_ptr< NoGUI::Element > setBackground = pg->addElement< NoGUI::Element >(mainBackStyle, "", "ALabel");
-	
-	vsyncLabel->addComponent< NoGUI::CText >(hostLabelStyle);
-	fullLabel->addComponent< NoGUI::CText >(hostLabelStyle);
-	AALabel->addComponent< NoGUI::CText >(hostLabelStyle);
-	resLabel->addComponent< NoGUI::CText >(hostLabelStyle);
-	mainButton->addComponent< NoGUI::CText >(buttonStyle);
-	setBackground->addComponent< NoGUI::CImage >(settingsBack);
 	
 	std::shared_ptr< NoMVC::Model > model = GUIModel;
 	std::shared_ptr< NoMVC::View > view = menu;
