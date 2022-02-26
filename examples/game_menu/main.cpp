@@ -119,12 +119,12 @@ int main(int argc, char ** argv)
 	NoGUI::Style settingsStyle = {LIGHTGRAY, BLACK, (Vector2){offlineStyle.pos.x, offlineStyle.pos.y + 150}, (Vector2){115, 50}, 4, 1, 0};
 	NoGUI::Style exitStyle = {LIGHTGRAY, BLACK, (Vector2){settingsStyle.pos.x, settingsStyle.pos.y + 150}, (Vector2){115, 50}, 4, 1, 0};
 	
-	std::shared_ptr< NoGUI::Element > mainBackground = GUIModel->addElement< NoGUI::Element >(mainBackStyle, "", "ALabel");
-	std::shared_ptr< NoGUI::Element > titleLabel = GUIModel->addElement< NoGUI::Element >(title, "ANDOR", "Label");
-	std::shared_ptr< NoGUI::Element > onlineButton = GUIModel->addElement< NoGUI::Button >(onlineStyle, "Play Online", "Button");
-	std::shared_ptr< NoGUI::Element > offlineButton = GUIModel->addElement< NoGUI::Button >(offlineStyle, "Play Offline", "Button");
-	std::shared_ptr< NoGUI::Element > settingsButton = GUIModel->addElement< NoGUI::Button >(settingsStyle, "Settings", "Button");
-	std::shared_ptr< NoGUI::Element > exitButton = GUIModel->addElement< NoGUI::Button >(exitStyle, "Exit", "Button");
+	std::shared_ptr< NoGUI::Element > mainBackground = GUIModel->addElement< NoGUI::Element >(mainBackStyle, "ALabel", "");
+	std::shared_ptr< NoGUI::Element > titleLabel = GUIModel->addElement< NoGUI::Element >(title, "Label", "ANDOR");
+	std::shared_ptr< NoGUI::Element > onlineButton = GUIModel->addElement< NoGUI::Button >(onlineStyle, "Button", "Play Online");
+	std::shared_ptr< NoGUI::Element > offlineButton = GUIModel->addElement< NoGUI::Button >(offlineStyle, "Button", "Play Offline");
+	std::shared_ptr< NoGUI::Element > settingsButton = GUIModel->addElement< NoGUI::Button >(settingsStyle, "Button", "Settings");
+	std::shared_ptr< NoGUI::Element > exitButton = GUIModel->addElement< NoGUI::Button >(exitStyle, "Button", "Exit");
 	
 	// Page 1 (online navbar)
 	pg = GUIModel->addPage();
@@ -138,9 +138,9 @@ int main(int argc, char ** argv)
 	NoGUI::Style joinStyle = {BACKGROUND, BLACK, (Vector2){25, 50}, (Vector2){25, 30}, 4, 0, 0};
 	NoGUI::Style hostStyle = {BACKGROUND, BLACK, (Vector2){joinStyle.pos.x + joinStyle.radius.x * 2 - 4, joinStyle.pos.y + 8}, (Vector2){25, 30}, 4, 0, 0};
 	NoGUI::Style returnStyle = {BACKGROUND, BLACK, (Vector2){menu->getWindow().width - joinStyle.radius.x, joinStyle.pos.y + 8}, (Vector2){25, 30}, 4, 0, 0};
-	std::shared_ptr< NoGUI::Element > hostButton = pg->addElement< NoGUI::Button >(hostStyle, "Host", "AButton");
+	std::shared_ptr< NoGUI::Element > hostButton = pg->addElement< NoGUI::Button >(hostStyle, "AButton", "Host");
 	std::shared_ptr< NoGUI::Element > joinButton = pg->addElement< NoGUI::Button >(joinStyle, "Join", "Join");
-	std::shared_ptr< NoGUI::Element > returnButton = pg->addElement< NoGUI::Button >(returnStyle, "Back", "AButton");
+	std::shared_ptr< NoGUI::Element > returnButton = pg->addElement< NoGUI::Button >(returnStyle, "AButton", "Back");
 	
 	// Page 2 (join)
 	pg = GUIModel->addPage();
@@ -170,17 +170,17 @@ int main(int argc, char ** argv)
 	pg->getComponents("AImage")->addComponent< NoGUI::CImage >(joinBack);
 	
 	// elements
-	std::shared_ptr< NoGUI::Element > imgLabel = pg->addElement< NoGUI::Element >(backStyle, "Background", "AImage");
-	std::shared_ptr< NoGUI::Element > connectButton = pg->addElement< NoGUI::Button >(connectStyle, "Connect", "Button");
-	std::shared_ptr< NoGUI::Element > sendButton = pg->addElement< NoGUI::Button >(sendStyle, "SEND", "Button");
-	std::shared_ptr< NoGUI::Element > IPLabel = pg->addElement< NoGUI::Element >(IPStyle, "IP Address:", "Label");
-	std::shared_ptr< NoGUI::Element > portLabel = pg->addElement< NoGUI::Element >(portStyle, "Port:", "Label");
-	std::shared_ptr< NoGUI::Element > nameLabel = pg->addElement< NoGUI::Element >(nameStyle, "Username:", "Label");
-	std::shared_ptr< NoGUI::Element > msgLabel = pg->addElement< NoGUI::Element >(msgStyle, "Message:", "Label");
-	std::shared_ptr< NoGUI::Element > IPInput = pg->addElement< NoGUI::Input >(IPInStyle, "", "Input");
-	std::shared_ptr< NoGUI::Element > portInput = pg->addElement< NoGUI::Input >(portInStyle, "", "Input");
-	std::shared_ptr< NoGUI::Element > nameInput = pg->addElement< NoGUI::Input >(nameInStyle, "", "Input");
-	std::shared_ptr< NoGUI::Element > msgInput = pg->addElement< NoGUI::Input >(msgInStyle, "", "Input");
+	std::shared_ptr< NoGUI::Element > imgLabel = pg->addElement< NoGUI::Element >(backStyle, "AImage", "Background");
+	std::shared_ptr< NoGUI::Element > connectButton = pg->addElement< NoGUI::Button >(connectStyle, "Button", "Connect");
+	std::shared_ptr< NoGUI::Element > sendButton = pg->addElement< NoGUI::Button >(sendStyle, "Button", "SEND");
+	std::shared_ptr< NoGUI::Element > IPLabel = pg->addElement< NoGUI::Element >(IPStyle, "Label", "IP Address:");
+	std::shared_ptr< NoGUI::Element > portLabel = pg->addElement< NoGUI::Element >(portStyle, "Label", "Port:");
+	std::shared_ptr< NoGUI::Element > nameLabel = pg->addElement< NoGUI::Element >(nameStyle, "Label", "Username:");
+	std::shared_ptr< NoGUI::Element > msgLabel = pg->addElement< NoGUI::Element >(msgStyle, "Label", "Message:");
+	std::shared_ptr< NoGUI::Element > IPInput = pg->addElement< NoGUI::Input >(IPInStyle, "Input", "");
+	std::shared_ptr< NoGUI::Element > portInput = pg->addElement< NoGUI::Input >(portInStyle, "Input", "");
+	std::shared_ptr< NoGUI::Element > nameInput = pg->addElement< NoGUI::Input >(nameInStyle, "Input", "");
+	std::shared_ptr< NoGUI::Element > msgInput = pg->addElement< NoGUI::Input >(msgInStyle, "Input", "");
 	
 	// Page 3 (host)
 	pg = GUIModel->addPage();
@@ -206,14 +206,14 @@ int main(int argc, char ** argv)
 	pg->getComponents("AImage")->addComponent< NoGUI::CImage >(hostBack);
 	
 	// elements
-	std::shared_ptr< NoGUI::Element > hostImgLabel = pg->addElement< NoGUI::Element >(backStyle, "Background", "AImage");
-	std::shared_ptr< NoGUI::Element > serverButton = pg->addElement< NoGUI::Button >(serverStyle, "Host", "Button");
-	std::shared_ptr< NoGUI::Element > enterButton = pg->addElement< NoGUI::Button >(enterStyle, "ENTER", "Button"); // TODO: fix alignment bug
-	std::shared_ptr< NoGUI::Element > FFLabel = pg->addElement< NoGUI::Element >(FFStyle, "Friendly Fire", "Label");
-	std::shared_ptr< NoGUI::Element > lootLabel = pg->addElement< NoGUI::Element >(lootStyle, "Loot Style", "Label");
-	std::shared_ptr< NoGUI::Element > playerLabel = pg->addElement< NoGUI::Element >(playerStyle, "Character", "Label");
-	std::shared_ptr< NoGUI::Element > cheatLabel = pg->addElement< NoGUI::Element >(cheatStyle, "Cheat Codes:", "Label");
-	std::shared_ptr< NoGUI::Element > cheatInput = pg->addElement< NoGUI::Input >(cheatInStyle, "", "Input");
+	std::shared_ptr< NoGUI::Element > hostImgLabel = pg->addElement< NoGUI::Element >(backStyle, "AImage", "Background");
+	std::shared_ptr< NoGUI::Element > serverButton = pg->addElement< NoGUI::Button >(serverStyle, "Button", "Host");
+	std::shared_ptr< NoGUI::Element > enterButton = pg->addElement< NoGUI::Button >(enterStyle, "Button", "ENTER"); // TODO: fix alignment bug
+	std::shared_ptr< NoGUI::Element > FFLabel = pg->addElement< NoGUI::Element >(FFStyle, "Label", "Friendly Fire");
+	std::shared_ptr< NoGUI::Element > lootLabel = pg->addElement< NoGUI::Element >(lootStyle, "Label", "Loot Style");
+	std::shared_ptr< NoGUI::Element > playerLabel = pg->addElement< NoGUI::Element >(playerStyle, "Label", "Character");
+	std::shared_ptr< NoGUI::Element > cheatLabel = pg->addElement< NoGUI::Element >(cheatStyle, "Label", "Cheat Codes:");
+	std::shared_ptr< NoGUI::Element > cheatInput = pg->addElement< NoGUI::Input >(cheatInStyle, "Input", "");
 	
 	// Page 4 (settings)
 	pg = GUIModel->addPage();
@@ -238,12 +238,12 @@ int main(int argc, char ** argv)
 	pg->getComponents("ALabel")->addComponent< NoGUI::CImage >(hostBack);
 	
 	// elements
-	std::shared_ptr< NoGUI::Element > setBackground = pg->addElement< NoGUI::Element >(mainBackStyle, "", "ALabel");
-	std::shared_ptr< NoGUI::Element > vsyncLabel = pg->addElement< NoGUI::Element >(vsyncStyle, "Vsync", "Label");
-	std::shared_ptr< NoGUI::Element > fullLabel = pg->addElement< NoGUI::Element >(fullStyle, "Fullscreen", "Label");
-	std::shared_ptr< NoGUI::Element > AALabel = pg->addElement< NoGUI::Element >(AAStyle, "Anti Aliasing", "Label");
-	std::shared_ptr< NoGUI::Element > resLabel = pg->addElement< NoGUI::Element >(resStyle, "Resolution", "Label");
-	std::shared_ptr< NoGUI::Element > mainButton = pg->addElement< NoGUI::Button >(mainStyle, "Back", "Button");
+	std::shared_ptr< NoGUI::Element > setBackground = pg->addElement< NoGUI::Element >(mainBackStyle, "ALabel", "");
+	std::shared_ptr< NoGUI::Element > vsyncLabel = pg->addElement< NoGUI::Element >(vsyncStyle, "Label", "Vsync");
+	std::shared_ptr< NoGUI::Element > fullLabel = pg->addElement< NoGUI::Element >(fullStyle, "Label", "Fullscreen");
+	std::shared_ptr< NoGUI::Element > AALabel = pg->addElement< NoGUI::Element >(AAStyle, "Label", "Anti Aliasing");
+	std::shared_ptr< NoGUI::Element > resLabel = pg->addElement< NoGUI::Element >(resStyle, "Label", "Resolution");
+	std::shared_ptr< NoGUI::Element > mainButton = pg->addElement< NoGUI::Button >(mainStyle, "Button", "Back");
 	
 	std::shared_ptr< NoMVC::Model > model = GUIModel;
 	std::shared_ptr< NoMVC::View > view = menu;
