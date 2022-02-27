@@ -13,16 +13,16 @@ int main(int argc, char ** argv)
 	
 	Vector2 center = (Vector2){game->getWindow().width/2, game->getWindow().height/2};
 	// TODO: load this from a file
-	std::shared_ptr< Font > font = game->assets.addFont("jupiter_crash", "../fonts/jupiter_crash.png");
-	std::shared_ptr< Texture2D > mainImg = game->assets.addTexture("mainBack", "../imgs/space2.png");
+	std::shared_ptr< Font > font = game->assets->addFont("jupiter_crash", "../fonts/jupiter_crash.png");
+	std::shared_ptr< Texture2D > mainImg = game->assets->addTexture("mainBack", "../imgs/space2.png");
 	NoGUI::CImage mainBack = NoGUI::CImage(mainImg);
 	mainBack.cropping = NoGUI::Crop::NONE;
-	std::shared_ptr< Texture2D > settingsImg = game->assets.addTexture("setBack", "../imgs/pond1.png");
+	std::shared_ptr< Texture2D > settingsImg = game->assets->addTexture("setBack", "../imgs/pond1.png");
 	NoGUI::CImage settingsBack = NoGUI::CImage(settingsImg);
 	settingsBack.cropping = NoGUI::Crop::NONE;
-	std::shared_ptr< Texture2D > joinImg = game->assets.addTexture("joinBack", "../imgs/background.png");
+	std::shared_ptr< Texture2D > joinImg = game->assets->addTexture("joinBack", "../imgs/background.png");
 	NoGUI::CImage joinBack = NoGUI::CImage(joinImg);
-	std::shared_ptr< Texture2D > hostImg = game->assets.addTexture("hostBack", "../imgs/background2.png");
+	std::shared_ptr< Texture2D > hostImg = game->assets->addTexture("hostBack", "../imgs/background2.png");
 	NoGUI::CImage hostBack = NoGUI::CImage(hostImg);
 	// text
 	NoGUI::CText titleStyle = NoGUI::CText(font);
