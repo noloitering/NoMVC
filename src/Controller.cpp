@@ -1,17 +1,36 @@
 #include "Controller.h"
 
-NoMVC::Controller::Controller(bool start)
+NoMVC::Controller::Controller(std::shared_ptr< NoMEM::MEMManager > mem, bool start)
 {
+	if ( mem == nullptr )
+	{
+		assets = std::make_shared< NoMEM::MEMManager >();
+	}
+	else
+	{
+		assets = mem;
+	}
 	if ( start )
 	{
 		init();
 	}
 }
 
-NoMVC::Controller::Controller(const NoMVC::WindowConfig& config, bool start)
+NoMVC::Controller::Controller(const NoMVC::WindowConfig& config, std::shared_ptr< NoMEM::MEMManager > mem, bool start)
 {
 	changeWindow(config, false);
-	init();
+	if ( mem == nullptr )
+	{
+		assets = std::make_shared< NoMEM::MEMManager >();
+	}
+	else
+	{
+		assets = mem;
+	}
+	if ( start )
+	{
+		init();
+	}
 }
 
 void NoMVC::Controller::init(const std::string& title)
@@ -50,7 +69,7 @@ int NoMVC::Controller::quit()
 {
 	if ( !WindowShouldClose() )
 	{
-		assets.clear();
+		assets->clear();
 		CloseWindow();
 	}
 	

@@ -11,9 +11,9 @@ namespace NoMVC
 		std::shared_ptr< View > scene;
 		WindowConfig window;
 	public:
-		NoMEM::MEMManager assets;
-		Controller(bool start=true);
-		Controller(const WindowConfig& config, bool start=true);
+		std::shared_ptr< NoMEM::MEMManager > assets;
+		Controller(std::shared_ptr< NoMEM::MEMManager > mem=nullptr, bool start=true);
+		Controller(const WindowConfig& config, std::shared_ptr< NoMEM::MEMManager > mem=nullptr, bool start=true);
 		void init(const std::string& title="Client App");
 		MouseCursor cursor = MOUSE_CURSOR_DEFAULT;
 		std::shared_ptr< View > currentScene();
