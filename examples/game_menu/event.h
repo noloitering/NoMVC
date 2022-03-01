@@ -169,7 +169,7 @@ void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
 	}
 	else if ( elem->getTag() == "AspectOption" )
 	{
-		std::shared_ptr< NoGUI::Element > resDrop = overlay->getPage(4)->getElements("Res").at(0);
+		std::shared_ptr< NoGUI::Element > resDrop = overlay->getPage(6)->getElements("Res").at(0);
 		if ( resDrop )
 		{
 			NoGUI::CDropDown resDown = resDrop->components->getComponent< NoGUI::CDropDown >();
@@ -237,10 +237,10 @@ void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
 	else if ( elem->getInner() == "Settings" )
 	{
 		overlay->getPage(0)->setActive(false);
-		overlay->getPage(4)->setActive(true);
-		std::vector< std::shared_ptr< NoGUI::Element > > AAToggles = overlay->getPage(4)->getElements("ToggleAA");
-		std::vector< std::shared_ptr< NoGUI::Element > > vToggles = overlay->getPage(4)->getElements("ToggleV");
-		std::vector< std::shared_ptr< NoGUI::Element > > fsToggles = overlay->getPage(4)->getElements("ToggleFS");
+		overlay->getPage(6)->setActive(true);
+		std::vector< std::shared_ptr< NoGUI::Element > > AAToggles = overlay->getPage(6)->getElements("ToggleAA");
+		std::vector< std::shared_ptr< NoGUI::Element > > vToggles = overlay->getPage(6)->getElements("ToggleV");
+		std::vector< std::shared_ptr< NoGUI::Element > > fsToggles = overlay->getPage(6)->getElements("ToggleFS");
 		for (auto element : AAToggles)
 		{
 			if ( getAA() )
@@ -309,8 +309,8 @@ void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
 	{
 		config.backCol = BLACK;
 		SetTargetFPS(config.fps);
-		std::shared_ptr< NoGUI::Element > aspectR = overlay->getPage(4)->getElements("AspectR").at(0);
-		std::shared_ptr< NoGUI::Element > res = overlay->getPage(4)->getElements("Res").at(0);
+		std::shared_ptr< NoGUI::Element > aspectR = overlay->getPage(6)->getElements("AspectR").at(0);
+		std::shared_ptr< NoGUI::Element > res = overlay->getPage(6)->getElements("Res").at(0);
 		const std::string&  aspectVal = aspectR->getInner();
 		if ( aspectVal == "16:9" )
 		{
@@ -332,7 +332,7 @@ void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
 		{
 			setRes(map43.at(res->getInner()));
 		}
-		SetWindowState(config.flags);
+		setFlags(config.flags);
 		for (size_t i=0; i < overlay->size(); i++)
 		{
 			overlay->getPage(i)->setActive(false);

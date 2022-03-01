@@ -177,6 +177,7 @@ int main(int argc, char ** argv)
 	std::shared_ptr< NoGUI::Element > cheatLabel = pg->addElement< NoGUI::Element >(cheatStyle, "Label", "Cheat Codes:");
 	std::shared_ptr< NoGUI::Element > lootDrop = pg->addElement< NoGUI::Button >(lootDStyle, "Loot", "FFA");
 	std::shared_ptr< NoGUI::Element > playerDrop = pg->addElement< NoGUI::Button >(playerDStyle, "Player", "Sniper");
+	// Page 4 (loot dropdown)
 	std::shared_ptr< NoGUI::DropDown > lootDown = GUIModel->addDropDown(lootDrop, NoGUI::TextWrap::DOWN);
 	lootDown->addComponents("LootOption", std::make_shared< NoGUI::CContainer >());
 	lootDown->getComponents("LootOption")->addComponent< NoGUI::CText >(dropStyle);
@@ -184,6 +185,7 @@ int main(int argc, char ** argv)
 	lootDown->addElement< NoGUI::Button >("LootOption", "Share");
 	lootDown->addElement< NoGUI::Button >("LootOption", "Host");
 	lootDown->addElement< NoGUI::Button >("LootOption", "Unique");
+	// Page 5 (character dropdown)
 	std::shared_ptr< NoGUI::DropDown > playerDown = GUIModel->addDropDown(playerDrop, NoGUI::TextWrap::DOWN);
 	playerDown->addComponents("PlayerOption", std::make_shared< NoGUI::CContainer >());
 	playerDown->getComponents("PlayerOption")->addComponent< NoGUI::CText >(dropStyle);
@@ -193,7 +195,7 @@ int main(int argc, char ** argv)
 	playerDown->addElement< NoGUI::Button >("PlayerOption", "Shotgun");
 	playerDown->addElement< NoGUI::Button >("PlayerOption", "Akimbo");
 	
-	// Page 4 (settings)
+	// Page 6 (settings)
 	pg = GUIModel->addPage();
 	
 	NoGUI::Style setBackStyle = {BACKGROUND, BLACK, (Vector2){center.x, center.y}, (Vector2){center.x, center.y}, 4, 0, 0};
@@ -251,12 +253,14 @@ int main(int argc, char ** argv)
 	std::shared_ptr< NoGUI::Element > resLabel = pg->addElement< NoGUI::Element >(resStyle, "Label", "Resolution");
 	std::shared_ptr< NoGUI::Element > mainButton = pg->addElement< NoGUI::Button >(mainStyle, "Button", "Back");
 	std::shared_ptr< NoGUI::DropDown > fpsDown = GUIModel->addDropDown(fpsDrop, NoGUI::TextWrap::DOWN);
+	// Page 7 (fps dropdown)
 	fpsDown->addComponents("FPSOption", std::make_shared< NoGUI::CContainer >());
 	fpsDown->getComponents("FPSOption")->addComponent< NoGUI::CText >(dropStyle);
 	for (auto i = mapFPS.rbegin(); i != mapFPS.rend(); ++i) 
 	{
 		fpsDown->addElement< NoGUI::Button >("FPSOption", i->first);
 	}
+	// Page 8 (resolution dropdown)
 	std::shared_ptr< NoGUI::DropDown > resDown = GUIModel->addDropDown(resDrop, NoGUI::TextWrap::DOWN);
 	resDown->addComponents("ResOption", std::make_shared< NoGUI::CContainer >());
 	resDown->getComponents("ResOption")->addComponent< NoGUI::CText >(dropStyle);
@@ -264,6 +268,7 @@ int main(int argc, char ** argv)
 	{
 		resDown->addElement< NoGUI::Button >("ResOption", i->first);
 	}
+	// Page 9 (aspect ratio dropdown)
 	std::shared_ptr< NoGUI::DropDown > aspectDown = GUIModel->addDropDown(aspectDrop, NoGUI::TextWrap::DOWN);
 	aspectDown->addComponents("AspectOption", std::make_shared< NoGUI::CContainer >());
 	aspectDown->getComponents("AspectOption")->addComponent< NoGUI::CText >(dropStyle);
