@@ -42,6 +42,9 @@ int main(int argc, char ** argv)
 	inputStyle.shadow.draw = false;
 	NoGUI::CText buttonStyle = inputStyle; // copy
 	buttonStyle.align = NoGUI::TextAlign::CENTER;
+	NoGUI::CText dropStyle = buttonStyle; // copy
+	dropStyle.spacing = {1, 0};
+	dropStyle.col = BLACK;
 	NoGUI::CText joinText = inputStyle; // copy
 	joinText.align = NoGUI::TextAlign::TOP;
 	joinText.margin = (Vector2){0, 0};
@@ -133,64 +136,143 @@ int main(int argc, char ** argv)
 	pg = GUIModel->addPage();
 	
 	NoGUI::Style FFStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 250}, (Vector2){112, 25}, 4, 0, 0};
+	NoGUI::Style FFSStyle = {RED, BLACK, (Vector2){FFStyle.pos.x - 170, center.y - 265}, (Vector2){25, 5}, 0, 0, 0};
 	NoGUI::Style lootStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 200}, (Vector2){112, 25}, 4, 0, 0};
 	NoGUI::Style playerStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 150}, (Vector2){112, 25}, 4, 0, 0};
 	NoGUI::Style cheatStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 50}, (Vector2){112, 25}, 4, 0, 0};
 	NoGUI::Style cheatInStyle = {LIGHTGRAY, BLACK, (Vector2){cheatStyle.pos.x, cheatStyle.pos.y + 30}, (Vector2){112, 25}, 4, 2, 0};
 	NoGUI::Style enterStyle = {GREEN, BLACK, (Vector2){center.x - cheatStyle.radius.x - 25, cheatStyle.pos.y + 30}, (Vector2){25, 25}, 4, 1, 0};
 	NoGUI::Style serverStyle = {GRAY, BLACK, (Vector2){center.x, center.y + 225}, (Vector2){115, 50}, 4, 1, 0};
+	NoGUI::Style lootDStyle = {GRAY, BLACK, (Vector2){lootStyle.pos.x - 170, lootStyle.pos.y - 15}, (Vector2){40, 20}, 4, 1, 0};
+	NoGUI::Style playerDStyle = {GRAY, BLACK, (Vector2){playerStyle.pos.x - 170, playerStyle.pos.y - 15}, (Vector2){40, 20}, 4, 1, 0};
+	NoGUI::Style FFToggle = {LIGHTGRAY, BLACK, (Vector2){FFSStyle.radius.x * -1, 0}, (Vector2){5, 5}, 0, 1, 0};
 	
 	// components
 	pg->addComponents("AImage", std::make_shared< NoGUI::CContainer >());
 	pg->addComponents("Button", std::make_shared< NoGUI::CContainer >());
 	pg->addComponents("Label", std::make_shared< NoGUI::CContainer >());
 	pg->addComponents("Input", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("ToggleFF", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Loot", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Player", std::make_shared< NoGUI::CContainer >());
 	
 	pg->getComponents("Label")->addComponent< NoGUI::CText >(hostLabelStyle);
 	pg->getComponents("Button")->addComponent< NoGUI::CText >(buttonStyle);
 	pg->getComponents("Input")->addComponent< NoGUI::CText >(inputStyle);
 	pg->getComponents("Input")->addComponent< NoGUI::CInput >(50);
 	pg->getComponents("AImage")->addComponent< NoGUI::CImage >(hostBack);
+	pg->getComponents("ToggleFF")->addComponent< NoGUI::CMultiStyle >(FFToggle);
+	pg->getComponents("Loot")->addComponent< NoGUI::CText >(dropStyle);
+	pg->getComponents("Player")->addComponent< NoGUI::CText >(dropStyle);
 	
 	// elements
 	std::shared_ptr< NoGUI::Element > hostImgLabel = pg->addElement< NoGUI::Element >(backStyle, "AImage", "Background");
 	std::shared_ptr< NoGUI::Element > serverButton = pg->addElement< NoGUI::Button >(serverStyle, "Button", "Host");
 	std::shared_ptr< NoGUI::Element > enterButton = pg->addElement< NoGUI::Button >(enterStyle, "Button", "ENTER"); // TODO: fix alignment bug
 	std::shared_ptr< NoGUI::Element > FFLabel = pg->addElement< NoGUI::Element >(FFStyle, "Label", "Friendly Fire");
+	std::shared_ptr< NoGUI::Element > FFSwitch = pg->addElement< NoGUI::Toggle >(FFSStyle, "ToggleFF", "Friendly Fire");
+	std::shared_ptr< NoGUI::Element > cheatInput = pg->addElement< NoGUI::Input >(cheatInStyle, "Input", "");
 	std::shared_ptr< NoGUI::Element > lootLabel = pg->addElement< NoGUI::Element >(lootStyle, "Label", "Loot Style");
 	std::shared_ptr< NoGUI::Element > playerLabel = pg->addElement< NoGUI::Element >(playerStyle, "Label", "Character");
 	std::shared_ptr< NoGUI::Element > cheatLabel = pg->addElement< NoGUI::Element >(cheatStyle, "Label", "Cheat Codes:");
-	std::shared_ptr< NoGUI::Element > cheatInput = pg->addElement< NoGUI::Input >(cheatInStyle, "Input", "");
+	std::shared_ptr< NoGUI::Element > lootDrop = pg->addElement< NoGUI::Button >(lootDStyle, "Loot", "FFA");
+	std::shared_ptr< NoGUI::Element > playerDrop = pg->addElement< NoGUI::Button >(playerDStyle, "Player", "Sniper");
+	std::shared_ptr< NoGUI::DropDown > lootDown = GUIModel->addDropDown(lootDrop, NoGUI::TextWrap::DOWN);
+	lootDown->addComponents("LootOption", std::make_shared< NoGUI::CContainer >());
+	lootDown->getComponents("LootOption")->addComponent< NoGUI::CText >(dropStyle);
+	lootDown->addElement< NoGUI::Button >("LootOption", "FFA");
+	lootDown->addElement< NoGUI::Button >("LootOption", "Share");
+	lootDown->addElement< NoGUI::Button >("LootOption", "Host");
+	lootDown->addElement< NoGUI::Button >("LootOption", "Unique");
+	std::shared_ptr< NoGUI::DropDown > playerDown = GUIModel->addDropDown(playerDrop, NoGUI::TextWrap::DOWN);
+	playerDown->addComponents("PlayerOption", std::make_shared< NoGUI::CContainer >());
+	playerDown->getComponents("PlayerOption")->addComponent< NoGUI::CText >(dropStyle);
+	playerDown->addElement< NoGUI::Button >("PlayerOption", "Sniper");
+	playerDown->addElement< NoGUI::Button >("PlayerOption", "Rifler");
+	playerDown->addElement< NoGUI::Button >("PlayerOption", "Bruiser");
+	playerDown->addElement< NoGUI::Button >("PlayerOption", "Shotgun");
+	playerDown->addElement< NoGUI::Button >("PlayerOption", "Akimbo");
 	
 	// Page 4 (settings)
 	pg = GUIModel->addPage();
 	
 	NoGUI::Style setBackStyle = {BACKGROUND, BLACK, (Vector2){center.x, center.y}, (Vector2){center.x, center.y}, 4, 0, 0};
 	NoGUI::Style vsyncStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 250}, (Vector2){112, 25}, 4, 0, 0};
+	NoGUI::Style vsyncSStyle = {GRAY, BLACK, (Vector2){vsyncStyle.pos.x - 170, center.y - 265}, (Vector2){25, 5}, 0, 0, 0};
 	NoGUI::Style fullStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 200}, (Vector2){112, 25}, 4, 0, 0};
+	NoGUI::Style fullSStyle = {GRAY, BLACK, (Vector2){fullStyle.pos.x - 170, center.y - 215}, (Vector2){25, 5}, 0, 0, 0};
 	NoGUI::Style AAStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 150}, (Vector2){112, 25}, 4, 0, 0};
+	NoGUI::Style AASStyle = {GRAY, BLACK, (Vector2){AAStyle.pos.x - 170, center.y - 165}, (Vector2){25, 5}, 0, 0, 0};
 	NoGUI::Style resStyle = {INVISIBLE, BLACK, (Vector2){center.x, center.y - 50}, (Vector2){112, 25}, 4, 0, 0};
 	NoGUI::Style mainStyle = {BACKGROUND, BLACK, (Vector2){menu->getWindow().width - 25,  20}, (Vector2){25, 18}, 4, 0, 0};
+	NoGUI::Style resDStyle = {GRAY, BLACK, (Vector2){resStyle.pos.x + 100, resStyle.pos.y - 15}, (Vector2){100, 20}, 4, 1, 0};
+	NoGUI::Style aspectDStyle = {GRAY, BLACK, (Vector2){resStyle.pos.x - 170, resStyle.pos.y - 15}, (Vector2){30, 20}, 4, 1, 0};
+	NoGUI::Style fpsDStyle = {GRAY, BLACK, (Vector2){vsyncStyle.pos.x + 100, vsyncStyle.pos.y - 15}, (Vector2){100, 20}, 4, 1, 0};
+	NoGUI::Style vToggle = {LIGHTGRAY, BLACK, (Vector2){0, 0}, (Vector2){5, 5}, 0, 1, 0};
+	NoGUI::Style fsToggle = {LIGHTGRAY, BLACK, (Vector2){0, 0}, (Vector2){5, 5}, 0, 1, 0};
+	NoGUI::Style AAToggle = {LIGHTGRAY, BLACK, (Vector2){0, 0}, (Vector2){5, 5}, 0, 1, 0};
 	
 	// components
 	pg->addComponents("ALabel", std::make_shared< NoGUI::CContainer >());
 	pg->addComponents("Button", std::make_shared< NoGUI::CContainer >());
 	pg->addComponents("Label", std::make_shared< NoGUI::CContainer >());
 	pg->addComponents("Input", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("ToggleAA", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("ToggleV", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("ToggleFS", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("FPS", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("Res", std::make_shared< NoGUI::CContainer >());
+	pg->addComponents("AspectR", std::make_shared< NoGUI::CContainer >());
+	
 	
 	pg->getComponents("Label")->addComponent< NoGUI::CText >(hostLabelStyle);
 	pg->getComponents("Button")->addComponent< NoGUI::CText >(buttonStyle);
 	pg->getComponents("Input")->addComponent< NoGUI::CText >(inputStyle);
 	pg->getComponents("Input")->addComponent< NoGUI::CInput >(50);
-	pg->getComponents("ALabel")->addComponent< NoGUI::CImage >(hostBack);
+	pg->getComponents("ALabel")->addComponent< NoGUI::CImage >(settingsBack);
+	pg->getComponents("ToggleAA")->addComponent< NoGUI::CMultiStyle >(AAToggle);
+	pg->getComponents("ToggleV")->addComponent< NoGUI::CMultiStyle >(vToggle);
+	pg->getComponents("ToggleFS")->addComponent< NoGUI::CMultiStyle >(fsToggle);
+	pg->getComponents("FPS")->addComponent< NoGUI::CText >(dropStyle);
+	pg->getComponents("Res")->addComponent< NoGUI::CText >(dropStyle);
+	pg->getComponents("AspectR")->addComponent< NoGUI::CText >(dropStyle);
 	
 	// elements
 	std::shared_ptr< NoGUI::Element > setBackground = pg->addElement< NoGUI::Element >(mainBackStyle, "ALabel", "");
 	std::shared_ptr< NoGUI::Element > vsyncLabel = pg->addElement< NoGUI::Element >(vsyncStyle, "Label", "Vsync");
+	std::shared_ptr< NoGUI::Element > vsyncSwitch = pg->addElement< NoGUI::Toggle >(vsyncSStyle, "ToggleV", "Vsync");
 	std::shared_ptr< NoGUI::Element > fullLabel = pg->addElement< NoGUI::Element >(fullStyle, "Label", "Fullscreen");
+	std::shared_ptr< NoGUI::Element > fullSwitch = pg->addElement< NoGUI::Toggle >(fullSStyle, "ToggleFS", "Fullscreen");
 	std::shared_ptr< NoGUI::Element > AALabel = pg->addElement< NoGUI::Element >(AAStyle, "Label", "Anti Aliasing");
+	std::shared_ptr< NoGUI::Element > AASwitch = pg->addElement< NoGUI::Toggle >(AASStyle, "ToggleAA", "Anti Aliasing");
+	std::shared_ptr< NoGUI::Element > resDrop = pg->addElement< NoGUI::Button >(resDStyle, "Res", "1920 x 1080 HD");
+	std::shared_ptr< NoGUI::Element > aspectDrop = pg->addElement< NoGUI::Input >(aspectDStyle, "AspectR", "16:9");
+	std::shared_ptr< NoGUI::Element > fpsDrop = pg->addElement< NoGUI::Button >(fpsDStyle, "FPS", "60fps HD Gaming");
 	std::shared_ptr< NoGUI::Element > resLabel = pg->addElement< NoGUI::Element >(resStyle, "Label", "Resolution");
 	std::shared_ptr< NoGUI::Element > mainButton = pg->addElement< NoGUI::Button >(mainStyle, "Button", "Back");
+	std::shared_ptr< NoGUI::DropDown > fpsDown = GUIModel->addDropDown(fpsDrop, NoGUI::TextWrap::DOWN);
+	fpsDown->addComponents("FPSOption", std::make_shared< NoGUI::CContainer >());
+	fpsDown->getComponents("FPSOption")->addComponent< NoGUI::CText >(dropStyle);
+	for (auto i = mapFPS.rbegin(); i != mapFPS.rend(); ++i) 
+	{
+		fpsDown->addElement< NoGUI::Button >("FPSOption", i->first);
+	}
+	std::shared_ptr< NoGUI::DropDown > resDown = GUIModel->addDropDown(resDrop, NoGUI::TextWrap::DOWN);
+	resDown->addComponents("ResOption", std::make_shared< NoGUI::CContainer >());
+	resDown->getComponents("ResOption")->addComponent< NoGUI::CText >(dropStyle);
+	for (auto i = map169.rbegin(); i != map169.rend(); ++i)
+	{
+		resDown->addElement< NoGUI::Button >("ResOption", i->first);
+	}
+	std::shared_ptr< NoGUI::DropDown > aspectDown = GUIModel->addDropDown(aspectDrop, NoGUI::TextWrap::DOWN);
+	aspectDown->addComponents("AspectOption", std::make_shared< NoGUI::CContainer >());
+	aspectDown->getComponents("AspectOption")->addComponent< NoGUI::CText >(dropStyle);
+	aspectDown->addElement< NoGUI::Button >("AspectOption", "32:9");
+	aspectDown->addElement< NoGUI::Button >("AspectOption", "21:9");
+	aspectDown->addElement< NoGUI::Button >("AspectOption", "16:9");
+	aspectDown->addElement< NoGUI::Button >("AspectOption", "16:10");
+	aspectDown->addElement< NoGUI::Button >("AspectOption", "4:3");
+	
 	
 	std::shared_ptr< NoMVC::Model > model = GUIModel;
 	std::shared_ptr< NoMVC::View > view = menu;

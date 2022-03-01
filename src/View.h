@@ -16,7 +16,7 @@ namespace NoMVC
 		int height = 720; // pixels
 		int fps = 60; // frames per second
 		float spf = 1 / 60;
-		bool full = false;  // fullscreen
+		unsigned int flags = 0x00000000;
 		Color backCol = RAYWHITE;
 	};
 	
@@ -44,6 +44,22 @@ namespace NoMVC
 		virtual void run();
 		std::shared_ptr< Model > getModel(size_t index);
 		WindowConfig getWindow();
+		Vector2 getRes();
+		int getTargetFPS();
+		unsigned int getFlags();
+		bool getAA();
+		bool isFull();
+		bool isSynced();
+		Color getCol();
+		void setWindow(const WindowConfig& conf);
+		void setRes(int x, int y);
+		void setRes(const Vector2& res);
+		void setFPS(int fps);
+		void setFlags(unsigned int flags);
+		void setAA(bool AA);
+		void setFull(bool full);
+		void setSync(bool sync);
+		void setCol(const Color& col);
 		int size();
 		size_t currentFrame() {return frame;}
 	};
