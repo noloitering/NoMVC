@@ -4,3 +4,6 @@
 [submodule "examples/include/NoGUI"]
 	path = examples/include/NoGUI
 	url = https://github.com/noloitering/NoGUI.git
+[submodule "NoSFX"]
+	path = NoSFX
+	url = https://github.com/noloitering/NoSFX.git

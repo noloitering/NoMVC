@@ -12,17 +12,22 @@ int main(int argc, char ** argv)
 	GUIModel->addListener(menu);
 	
 	Vector2 center = (Vector2){game->getWindow().width/2, game->getWindow().height/2};
-	// TODO: load this from a file
+	// load assets
 	std::shared_ptr< Font > font = game->assets->addFont("jupiter_crash", "../fonts/jupiter_crash.png");
 	std::shared_ptr< Texture2D > mainImg = game->assets->addTexture("mainBack", "../imgs/space2.png");
+	std::shared_ptr< Texture2D > settingsImg = game->assets->addTexture("setBack", "../imgs/pond1.png");
+	std::shared_ptr< Texture2D > joinImg = game->assets->addTexture("joinBack", "../imgs/background.png");
+	std::shared_ptr< Texture2D > hostImg = game->assets->addTexture("hostBack", "../imgs/background2.png");
+	std::shared_ptr< Music > titleSong = game->assets->addMusic("title", "../audio/title.wav");
+	std::shared_ptr< Sound > focusSound = game->assets->addSound("click", "../audio/click.wav");
+	std::shared_ptr< Sound > toggleSound = game->assets->addSound("switch", "../audio/switch.wav");
+	game->sfx->adjustMaster(0.6);
+	// image
 	NoGUI::CImage mainBack = NoGUI::CImage(mainImg);
 	mainBack.cropping = NoGUI::Crop::NONE;
-	std::shared_ptr< Texture2D > settingsImg = game->assets->addTexture("setBack", "../imgs/pond1.png");
 	NoGUI::CImage settingsBack = NoGUI::CImage(settingsImg);
 	settingsBack.cropping = NoGUI::Crop::NONE;
-	std::shared_ptr< Texture2D > joinImg = game->assets->addTexture("joinBack", "../imgs/background.png");
 	NoGUI::CImage joinBack = NoGUI::CImage(joinImg);
-	std::shared_ptr< Texture2D > hostImg = game->assets->addTexture("hostBack", "../imgs/background2.png");
 	NoGUI::CImage hostBack = NoGUI::CImage(hostImg);
 	// text
 	NoGUI::CText titleStyle = NoGUI::CText(font);
@@ -168,7 +173,7 @@ int main(int argc, char ** argv)
 	// elements
 	std::shared_ptr< NoGUI::Element > hostImgLabel = pg->addElement< NoGUI::Element >(backStyle, "AImage", "Background");
 	std::shared_ptr< NoGUI::Element > serverButton = pg->addElement< NoGUI::Button >(serverStyle, "Button", "Host");
-	std::shared_ptr< NoGUI::Element > enterButton = pg->addElement< NoGUI::Button >(enterStyle, "Button", "ENTER"); // TODO: fix alignment bug
+	std::shared_ptr< NoGUI::Element > enterButton = pg->addElement< NoGUI::Button >(enterStyle, "Button", "ENTER");
 	std::shared_ptr< NoGUI::Element > FFLabel = pg->addElement< NoGUI::Element >(FFStyle, "Label", "Friendly Fire");
 	std::shared_ptr< NoGUI::Element > FFSwitch = pg->addElement< NoGUI::Toggle >(FFSStyle, "ToggleFF", "Friendly Fire");
 	std::shared_ptr< NoGUI::Element > cheatInput = pg->addElement< NoGUI::Input >(cheatInStyle, "Input", "");
@@ -278,12 +283,12 @@ int main(int argc, char ** argv)
 	aspectDown->addElement< NoGUI::Button >("AspectOption", "16:10");
 	aspectDown->addElement< NoGUI::Button >("AspectOption", "4:3");
 	
-	
 	std::shared_ptr< NoMVC::Model > model = GUIModel;
 	std::shared_ptr< NoMVC::View > view = menu;
 	menu->addModel(model);
 	game->changeScene(menu);
 	game->currentScene()->update();
+	game->sfx->stream(titleSong, false);
 	int res = game->run();
 
 	return res;

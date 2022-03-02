@@ -81,6 +81,17 @@ public:
 void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
 {
 	NoGUI::GUIManager* overlay = dynamic_cast< NoGUI::GUIManager* >(models[0].get());
+	if ( dynamic_cast< NoGUI::Button* >(elem.get()) )
+	{
+		if (elem->getFocus())
+		{
+			game->sfx->play(game->assets->get< Sound >("click"));
+		}
+	}
+	else if ( dynamic_cast< NoGUI::Toggle* >(elem.get()) )
+	{
+		game->sfx->play(game->assets->get< Sound >("switch"));
+	}
 	if ( elem->getInner() == "Anti Aliasing" )
 	{
 		if ( elem->getFocus() )
@@ -99,7 +110,7 @@ void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
 			{
 				elem->components->getComponent< NoGUI::CMultiStyle >().styles.at(0).pos.x = elem->styling().radius.x * -1;
 			}
-			config.flags &= FLAG_MSAA_4X_HINT;
+			config.flags &= ~FLAG_MSAA_4X_HINT;
 		}
 	}
 	else if ( elem->getInner() == "Fullscreen" )
@@ -307,11 +318,12 @@ void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
 	}
 	else if ( elem->getInner() == "Play Offline" )
 	{
+		game->sfx->stopTrack();
 		config.backCol = BLACK;
-		SetTargetFPS(config.fps);
 		std::shared_ptr< NoGUI::Element > aspectR = overlay->getPage(6)->getElements("AspectR").at(0);
 		std::shared_ptr< NoGUI::Element > res = overlay->getPage(6)->getElements("Res").at(0);
 		const std::string&  aspectVal = aspectR->getInner();
+		SetTargetFPS(config.fps);
 		if ( aspectVal == "16:9" )
 		{
 			setRes(map169.at(res->getInner()));
