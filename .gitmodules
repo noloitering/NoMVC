@@ -7,3 +7,6 @@
 [submodule "NoSFX"]
 	path = NoSFX
 	url = https://github.com/noloitering/NoSFX.git
+[submodule "examples/include/NoECS"]
+	path = examples/include/NoECS
+	url = https://github.com/noloitering/NoECS.git
