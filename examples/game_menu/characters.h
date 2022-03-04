@@ -35,7 +35,6 @@ public:
 
 void CharSelect::onNotify(std::shared_ptr< NoGUI::Element > elem)
 {
-	std::cout << models.size() << std::endl;
 	if ( elem->getFocus() )
 	{
 		NoECS::EntitySystem* world = dynamic_cast< NoECS::EntitySystem* >(models[0].get());
