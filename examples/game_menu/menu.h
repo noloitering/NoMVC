@@ -377,15 +377,10 @@ public:
 		Color BACKGROUND = (Color){100, 100, 100, 255};
 		
 		std::shared_ptr< Font > font = assets->get< Font >("jupiter_crash");
-		std::shared_ptr< Texture > sniperSprite = assets->get< Texture2D >("sniper");
-		std::shared_ptr< Texture > akimboSprite = assets->get< Texture2D >("akimbo");
 		std::shared_ptr< Texture2D > mainImg = assets->get< Texture2D >("mainBack");
 		std::shared_ptr< Texture2D > settingsImg = assets->get< Texture2D >("setBack");
 		std::shared_ptr< Texture2D > joinImg = assets->get< Texture2D >("joinBack");
 		std::shared_ptr< Texture2D > hostImg = assets->get< Texture2D >("hostBack");
-		std::shared_ptr< Music > titleSong = assets->get< Music >("title");
-		std::shared_ptr< Sound > focusSound = assets->get< Sound >("click");
-		std::shared_ptr< Sound > toggleSound = assets->get< Sound >("switch");
 		// image
 		NoGUI::CImage mainBack = NoGUI::CImage(mainImg);
 		mainBack.cropping = NoGUI::Crop::NONE;

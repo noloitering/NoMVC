@@ -3,8 +3,8 @@ void loadAssets(std::shared_ptr< NoMVC::Controller > game)
 {
 	game->sfx->adjustMaster(0.6);
 	std::shared_ptr< Font > font = game->assets->addFont("jupiter_crash", "../fonts/jupiter_crash.png");
-	std::shared_ptr< Texture > sniperSprite = game->assets->addTexture("sniper", "../sprites/sniper.png");
-	std::shared_ptr< Texture > akimboSprite = game->assets->addTexture("akimbo", "../sprites/akimbo.png");
+	std::shared_ptr< NoMEM::Sprite > sniperSprite = game->assets->addSprite("sniper", "../sprites/sniper.png", 1);
+	std::shared_ptr< NoMEM::Sprite > akimboSprite = game->assets->addSprite("akimbo", "../sprites/akimbo.png", 1);
 	std::shared_ptr< Texture2D > mainImg = game->assets->addTexture("mainBack", "../imgs/space2.png");
 	std::shared_ptr< Texture2D > settingsImg = game->assets->addTexture("setBack", "../imgs/pond1.png");
 	std::shared_ptr< Texture2D > joinImg = game->assets->addTexture("joinBack", "../imgs/background.png");

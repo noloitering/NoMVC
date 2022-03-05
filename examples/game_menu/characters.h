@@ -8,9 +8,8 @@ public:
 		std::shared_ptr< NoECS::Entity > pc = entities.addEntity("Select");
 		Vector2 center = {menu->getWindow().width / 2, menu->getWindow().height / 2};
 		pc->addComponent< NoECS::CTransform >(center);
-		std::shared_ptr< Texture2D > sniperTex = assets->get< Texture2D >("sniper");	
-		Rectangle ra = {0, 0, sniperTex->width, sniperTex->height};
-		pc->addComponent< NoECS::CSprite >(sniperTex, ra);
+		std::shared_ptr< NoMEM::Sprite > sniper = assets->get< NoMEM::Sprite >("sniper");
+		pc->addComponent< NoECS::CSprite >(sniper->texture, sniper->frames);
 	}
 };
 
@@ -38,16 +37,16 @@ void CharSelect::onNotify(std::shared_ptr< NoGUI::Element > elem)
 	if ( elem->getFocus() )
 	{
 		NoECS::EntitySystem* world = dynamic_cast< NoECS::EntitySystem* >(models[0].get());
-//		std::shared_ptr< NoECS::Entity > entity = world->entities.getEntities().at(0); TODO: causes segfault.
+		NoECS::EntityVec test = world->entities.getEntities();
 		std::shared_ptr< NoECS::Entity > entity = world->entities.getEntities("Select").at(0);
 		NoECS::CSprite& sprite = entity->getComponent< NoECS::CSprite >();
-		if ( sprite.texture != game->assets->get< Texture2D >("sniper") )
+		if ( sprite.texture != game->assets->get< NoMEM::Sprite >("sniper")->texture )
 		{
-			sprite.texture = game->assets->get< Texture2D >("sniper");
+			sprite.texture = game->assets->get< NoMEM::Sprite >("sniper")->texture;
 		}
 		else
 		{
-			sprite.texture = game->assets->get< Texture2D >("akimbo");
+			sprite.texture = game->assets->get< NoMEM::Sprite >("akimbo")->texture;
 		}
 	}
 }
@@ -61,7 +60,7 @@ public:
 	{
 		addListener(menu);
 		
-		std::shared_ptr< Texture2D > sniperTex = assets->get< Texture2D >("sniper");
+		std::shared_ptr< Texture2D > sniperTex = assets->get< NoMEM::Sprite >("sniper")->texture;
 		Vector2 center = {menu->getWindow().width / 2, menu->getWindow().height / 2};
 		Vector2 rRadius = {50, 25};
 		Vector2 aRadius = {35, 15};
