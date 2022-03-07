@@ -1,7 +1,7 @@
 
 void loadAssets(std::shared_ptr< NoMVC::Controller > game)
 {
-	game->sfx->adjustMaster(0.6);
+	game->sfx->adjustMaster(1);
 	std::shared_ptr< Font > font = game->assets->addFont("jupiter_crash", "../fonts/jupiter_crash.png");
 	std::shared_ptr< NoMEM::Sprite > sniperSprite = game->assets->addSprite("sniper", "../sprites/sniper.png", 1);
 	std::shared_ptr< NoMEM::Sprite > akimboSprite = game->assets->addSprite("akimbo", "../sprites/akimbo.png", 1);
