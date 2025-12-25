@@ -6,7 +6,7 @@ NoMVC::Controller::Controller(std::shared_ptr< NoMEM::MEMManager > mem, std::sha
 	sfx = sound;
 	if ( start )
 	{
-		init();
+		startup();
 	}
 }
 
@@ -17,13 +17,13 @@ NoMVC::Controller::Controller(const NoMVC::WindowConfig& config, std::shared_ptr
 	sfx = sound;
 	if ( start )
 	{
-		init();
+		startup();
 	}
 }
 
-void NoMVC::Controller::init(const std::string& title)
+void NoMVC::Controller::startup(const char* title)
 {
-	InitWindow(window.width, window.height, title.c_str());
+	InitWindow(window.width, window.height, title);
 	SetTargetFPS(window.fps);
 
 	if ( assets == nullptr )
