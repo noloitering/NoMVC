@@ -3,19 +3,11 @@
 
 using namespace NoMVC;
 
-void View::update()
-{
-	for (auto model : models)
-	{
-		model->update();
-	}
-}
-
 void View::render()
 {
 	BeginDrawing();
 		ClearBackground(config.backCol);
-		for (auto model : models)
+		for (auto model : game->models)
 		{
 			model->render();
 		}
@@ -24,34 +16,8 @@ void View::render()
 
 void View::run()
 {
-	update();
+//	update();
 	render();
-}
-
-void View::cleanup()
-{
-	for (auto model : models )
-	{
-		model = nullptr;
-	}
-}
-
-void View::addModel(std::shared_ptr< Model > newModel)
-{
-	models.push_back(newModel);
-}
-
-std::shared_ptr< NoMVC::Model > NoMVC::View::getModel(size_t index)
-{
-	
-	return models[index];
-}
-
-int View::removeModel(size_t index)
-{
-	models.erase(models.begin() + index);
-	
-	return models.size();
 }
 
 WindowConfig View::getWindow()
@@ -101,6 +67,19 @@ Color View::getCol()
 	
 	return config.backCol;
 }
+
+std::vector< std::shared_ptr< NoMVC::Model > > NoMVC::View::getModels()
+{
+	
+	return game->models;
+}
+
+std::shared_ptr< NoMVC::Model > NoMVC::View::getModel(size_t index)
+{
+	
+	return getModels().at(index);
+}
+
 
 void View::setWindow(const WindowConfig& conf)
 {

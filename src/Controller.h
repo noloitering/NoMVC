@@ -8,9 +8,14 @@ namespace NoMVC
 { 
 	class Controller
 	{
+	friend class View;
+	friend std::vector< std::shared_ptr< Model > > NoMVC::View::getModels();
+	friend std::shared_ptr< Model > NoMVC::View::getModel(size_t index);
 	private:
 		std::shared_ptr< View > scene;
 		WindowConfig window;
+	protected:
+		std::vector< std::shared_ptr< Model > > models;
 	public:
 		std::shared_ptr< NoMEM::MEMManager > assets;
 		std::shared_ptr< NoSFX::AudioManager > sfx;
@@ -24,5 +29,7 @@ namespace NoMVC
 		int run();
 		int quit();
 		void changeWindow(const WindowConfig& newWindow, bool set=true);
+		virtual int removeModel(size_t index);
+		virtual void addModel(std::shared_ptr< Model > newModel);
 	};
 }

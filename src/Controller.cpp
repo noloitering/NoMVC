@@ -34,8 +34,10 @@ void NoMVC::Controller::init(const std::string& title)
 	{
 		sfx = std::make_shared< NoSFX::AudioManager >();
 	}
-	scene = std::make_shared< View >(this, window);
-	scene->update();
+	if ( scene == nullptr )
+	{
+		scene = std::make_shared< View >(this, window);
+	}
 }
 
 int NoMVC::Controller::run()
@@ -43,6 +45,10 @@ int NoMVC::Controller::run()
 	while ( !WindowShouldClose() )
 	{
 		sfx->update();
+		for (auto model : models)
+		{
+			model->update();
+		}
 		scene->run();
 	}
 	quit();
@@ -58,7 +64,6 @@ std::shared_ptr< NoMVC::View > NoMVC::Controller::currentScene()
 
 void NoMVC::Controller::changeScene(std::shared_ptr< NoMVC::View > newScene)
 {
-	scene->cleanup();
 	scene = newScene;
 }
 
@@ -86,4 +91,16 @@ void NoMVC::Controller::changeWindow(const NoMVC::WindowConfig& newWindow, bool 
 	{
 		SetWindowSize(newWindow.width, newWindow.height);
 	}
+}
+
+int NoMVC::Controller::removeModel(size_t index)
+{
+	models.erase(models.begin() + index);
+	
+	return models.size();
+}
+
+void NoMVC::Controller::addModel(std::shared_ptr< Model > newModel)
+{
+	models.push_back(newModel);
 }

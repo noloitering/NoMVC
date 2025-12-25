@@ -20,29 +20,26 @@ namespace NoMVC
 		Color backCol = RAYWHITE;
 	};
 	
+	
 	// TODO: use templates to cast models to their derived counterparts on get or add
 	class View
 	{
 	friend class Controller;
 	protected:
-		virtual void cleanup();
-		std::vector< std::shared_ptr< Model > > models;
 		Controller* game = nullptr;
 		WindowConfig config;
-		bool renderTexture = true; 
+		bool renderTexture = true;
 		bool paused = false;
 		size_t frame = 0;
 		void setPaused(bool paused) {paused = paused;}
+		std::vector< std::shared_ptr< Model > > getModels();
+		std::shared_ptr< Model > getModel(size_t index);
 	public:
 		View(Controller *g, WindowConfig conf)
 			: game(g), config(conf) {}
 		virtual ~View() {}
-		virtual int removeModel(size_t index);
-		virtual void addModel(std::shared_ptr< Model > newModel);
-		virtual void update();
 		virtual void render();
 		virtual void run();
-		std::shared_ptr< Model > getModel(size_t index);
 		WindowConfig getWindow();
 		Vector2 getRes();
 		int getTargetFPS();
