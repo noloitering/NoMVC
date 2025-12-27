@@ -45,9 +45,9 @@ int NoMVC::Controller::run()
 	while ( !WindowShouldClose() )
 	{
 		sfx->update();
-		for (auto model : models)
+		for (int i=0; i < models.size(); i++)
 		{
-			model->update();
+			models.at(i)->update();
 		}
 		scene->run();
 	}
