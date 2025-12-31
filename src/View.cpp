@@ -5,13 +5,11 @@ using namespace NoMVC;
 
 void View::render()
 {
-	BeginDrawing();
-		ClearBackground(config.backCol);
-		for (auto model : game->models)
-		{
-			model->render();
-		}
-    EndDrawing();
+	ClearBackground(config.backCol);
+	for (auto model : game->models)
+	{
+		model->render();
+	}
 }
 
 void View::run()

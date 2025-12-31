@@ -49,7 +49,10 @@ int NoMVC::Controller::run()
 		{
 			models.at(i)->update();
 		}
+		BeginDrawing();
+		ClearBackground(window.backCol);
 		scene->run();
+		EndDrawing();
 	}
 	quit();
 	
