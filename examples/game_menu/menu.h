@@ -71,10 +71,8 @@ const std::map< std::string, int > mapFPS = {
 class Menu : public NoMVC::View, public NoGUI::Listener
 {
 public:
-	void addModel(std::shared_ptr< NoMVC::Model > newModel) {NoMVC::View::addModel(newModel);}
-	void cleanup() {NoMVC::View::cleanup();}
-	int removeModel(size_t index) {NoMVC::View::removeModel(index);}
-	void update() {NoMVC::View::update();}
+	void addModel(std::shared_ptr< NoMVC::Model > newModel) {game->addModel(newModel);}
+	int removeModel(size_t index) {game->removeModel(index);}
 	void render() {NoMVC::View::render();}
 	void run() {NoMVC::View::run();}
 	void onNotify(std::shared_ptr< NoGUI::Element > elem);
@@ -113,7 +111,7 @@ bool Menu::flipSwitch(std::shared_ptr< NoGUI::Element > toggleS, std::shared_ptr
 
 void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
 {
-	NoGUI::GUIManager* overlay = dynamic_cast< NoGUI::GUIManager* >(models[0].get());
+	NoGUI::GUIManager* overlay = dynamic_cast< NoGUI::GUIManager* >(getModel(0).get());
 	if ( dynamic_cast< NoGUI::Button* >(elem.get()) )
 	{
 		if (elem->getFocus())
@@ -243,7 +241,7 @@ void Menu::onNotify(std::shared_ptr< NoGUI::Element > elem)
 			std::shared_ptr< CharGUI > GUI = std::make_shared< CharGUI >();
 			GUI->initialize(game->assets, newMenu);
 			newMenu->addModel(GUI);
-			update();
+//			update();
 			game->changeScene(newMenu);
 		}
 		else if ( elem->getInner() == "Host" )

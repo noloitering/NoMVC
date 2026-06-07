@@ -16,10 +16,8 @@ public:
 class CharSelect : public NoMVC::View, public NoGUI::Listener
 {
 public:
-	void addModel(std::shared_ptr< NoMVC::Model > newModel) {NoMVC::View::addModel(newModel);}
-	void cleanup() {NoMVC::View::cleanup();}
-	int removeModel(size_t index) {NoMVC::View::removeModel(index);}
-	void update() {NoMVC::View::update();}
+	void addModel(std::shared_ptr< NoMVC::Model > newModel) {game->addModel(newModel);}
+	int removeModel(size_t index) {game->removeModel(index);}
 	void render() {NoMVC::View::render();}
 	void run() {NoMVC::View::run();}
 	void onNotify(std::shared_ptr< NoGUI::Element > elem);
@@ -36,7 +34,7 @@ void CharSelect::onNotify(std::shared_ptr< NoGUI::Element > elem)
 {
 	if ( elem->getFocus() )
 	{
-		NoECS::EntitySystem* world = dynamic_cast< NoECS::EntitySystem* >(models[0].get());
+		NoECS::EntitySystem* world = dynamic_cast< NoECS::EntitySystem* >(getModel(1).get()); // TODO: might not be model 0
 		NoECS::EntityVec test = world->entities.getEntities();
 		std::shared_ptr< NoECS::Entity > entity = world->entities.getEntities("Select").at(0);
 		NoECS::CSprite& sprite = entity->getComponent< NoECS::CSprite >();
@@ -88,11 +86,8 @@ public:
 		{
 			rightStyle = (NoGUI::Style){RAYWHITE, BLACK, (Vector2){menu->getWindow().width - rRadius.x * 1.5, center.y}, rRadius, 4, 0, 0};
 		}
-//		elements->addComponents("CharArrow", std::make_shared< NoGUI::CContainer >());
-//		elements->getComponents("CharArrow")->addComponent< NoGUI::CMultiStyle >(arrowStyle);
 		std::shared_ptr< NoGUI::Element > rightArrow = elements->addElement< NoGUI::Button >(rightStyle, "CharArrow", "Right");
 		std::shared_ptr< NoGUI::Element > leftArrow = elements->addElement< NoGUI::Button >(leftStyle, "CharArrow", "Left");
-		//leftArrow->rotate(180);
 		leftArrow->components->addComponent< NoGUI::CMultiStyle >(lArrowStyle);
 		rightArrow->components->addComponent< NoGUI::CMultiStyle >(rArrowStyle);
 	}

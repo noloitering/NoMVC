@@ -1,4 +1,3 @@
-
 void loadAssets(std::shared_ptr< NoMVC::Controller > game)
 {
 	game->sfx->adjustMaster(1);

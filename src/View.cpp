@@ -5,7 +5,6 @@ using namespace NoMVC;
 
 void View::render()
 {
-	ClearBackground(config.backCol);
 	for (auto model : game->models)
 	{
 		model->render();

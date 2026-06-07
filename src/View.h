@@ -20,7 +20,6 @@ namespace NoMVC
 		Color backCol = RAYWHITE;
 	};
 	
-	
 	// TODO: use templates to cast models to their derived counterparts on get or add
 	class View
 	{

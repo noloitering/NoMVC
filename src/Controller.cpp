@@ -1,18 +1,8 @@
 #include "Controller.h"
 
-NoMVC::Controller::Controller(std::shared_ptr< NoMEM::MEMManager > mem, std::shared_ptr< NoSFX::AudioManager > sound, bool start)
+NoMVC::Controller::Controller(const WindowConfig& config, std::shared_ptr< NoMEM::MEMManager > mem, std::shared_ptr< NoSFX::AudioManager > sound, bool start)
 {
-	assets = mem;
-	sfx = sound;
-	if ( start )
-	{
-		startup();
-	}
-}
-
-NoMVC::Controller::Controller(const NoMVC::WindowConfig& config, std::shared_ptr< NoMEM::MEMManager > mem, std::shared_ptr< NoSFX::AudioManager > sound, bool start)
-{
-	changeWindow(config, false);
+	scene = std::make_shared< View >(this, config);
 	assets = mem;
 	sfx = sound;
 	if ( start )
@@ -23,9 +13,14 @@ NoMVC::Controller::Controller(const NoMVC::WindowConfig& config, std::shared_ptr
 
 void NoMVC::Controller::startup(const char* title)
 {
-	InitWindow(window.width, window.height, title);
-	SetTargetFPS(window.fps);
-
+	if ( scene == nullptr )
+	{
+		scene = std::make_shared< View >(this, WindowConfig());
+	}
+	const WindowConfig& config = scene->getWindow();
+	InitWindow(config.width, config.height, title);
+	SetTargetFPS(config.fps);
+	
 	if ( assets == nullptr )
 	{
 		assets = std::make_shared< NoMEM::MEMManager >();
@@ -33,10 +28,6 @@ void NoMVC::Controller::startup(const char* title)
 	if ( sfx == nullptr )
 	{
 		sfx = std::make_shared< NoSFX::AudioManager >();
-	}
-	if ( scene == nullptr )
-	{
-		scene = std::make_shared< View >(this, window);
 	}
 }
 
@@ -50,7 +41,7 @@ int NoMVC::Controller::run()
 			models.at(i)->update();
 		}
 		BeginDrawing();
-		ClearBackground(window.backCol);
+		ClearBackground(scene->getWindow().backCol);
 		scene->run();
 		EndDrawing();
 	}
@@ -79,21 +70,6 @@ int NoMVC::Controller::quit()
 	}
 	
 	return 0;
-}
-
-NoMVC::WindowConfig NoMVC::Controller::getWindow()
-{
-	
-	return window;
-}
-
-void NoMVC::Controller::changeWindow(const NoMVC::WindowConfig& newWindow, bool set)
-{
-	window = newWindow;
-	if ( set )
-	{
-		SetWindowSize(newWindow.width, newWindow.height);
-	}
 }
 
 int NoMVC::Controller::removeModel(size_t index)
