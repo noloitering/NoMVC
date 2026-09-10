@@ -36,9 +36,9 @@ int NoMVC::Controller::run()
 	while ( !WindowShouldClose() )
 	{
 		sfx->update();
-		for (int i=0; i < models.size(); i++)
+		for (std::shared_ptr< Model > model : models)
 		{
-			models.at(i)->update();
+			model->update();
 		}
 		BeginDrawing();
 		ClearBackground(scene->getWindow().backCol);

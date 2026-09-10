@@ -26,7 +26,7 @@ WindowConfig View::getWindow()
 Vector2 View::getRes()
 {
 	
-	return (Vector2){config.width, config.height};
+	return Vector2{(float)config.width, (float)config.height};
 }
 
 int View::getTargetFPS()
